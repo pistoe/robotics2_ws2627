@@ -298,19 +298,3 @@ A reset restores the **same** initial arrangement. Stop and relaunch with a diff
 Training seeds are public and repeatable. Use them to evaluate your method, not as a lookup key for object poses. During a challenge, workpiece state must come from the permitted camera observations and your action history. Robot state, calibration, object models and fixed fixture geometry are available. The repository supplies no task solver or reference trajectories.
 
 A simulator running on a machine you control cannot conceal its generated scene or seed from its owner. The final unseen seed is therefore chosen and run by the instructor in a controlled evaluation environment; it is not included in this repository or image. Submit an application that uses the documented ROS interfaces and does not depend on simulator files, state editing, privileged state feeds or seed-to-pose lookup tables. Human intervention and resets during a scored attempt follow the course rules.
-
-## Troubleshooting
-
-- **Permission error from rootless Podman:** run as your normal desktop user. Check `podman info`, subordinate UID/GID configuration and rootless storage. Use `crun`; keeping supplementary GPU groups requires it.
-- **No window or Xauthority error:** launch from the unlocked desktop session, check `echo "$DISPLAY"` and `xauth nlist "$DISPLAY"`. XWayland must be enabled under Wayland. Avoid `xhost +`.
-- **GPU/OpenGL error:** check access to `/dev/dri` and run `glxinfo -B` from the Linux desktop if available. To try Mesa software rendering, run `export PANDA_SOFTWARE_RENDERING=1` before launching. NVIDIA hosts may need a GPU setup specific to their engine and drivers.
-- **Container name already in use:** stop the previous environment with the stop command for your engine, or open a shell in that container.
-- **No motion:** confirm readiness, controller activation and that simulation is resumed. Review action result/error strings and logs. Do not issue overlapping commands from RViz and your node.
-- **High rendering load:** disable an unused camera, reduce `camera_rate`, close RViz, or use `use_rviz:=false`. Both camera streams need a rendering context even with `headless:=true`.
-- **Namespace/domain changes:** launch with `namespace:=team1` and replace `/panda` in your commands. Set `ROS_DOMAIN_ID=43` before launching to choose another domain; commands executed inside that container inherit it. A ROS domain is a discovery boundary, not an assessment security boundary.
-
-The Podman launcher reads `PANDA_IMAGE` for the image tag and `PANDA_CONTAINER` for the container name. `workspace/` and `logs/` persist on the host with either engine. Stop the container before removing generated workspace build and install directories.
-
-## Licensing
-
-`STUDENT_RELEASE.json` records the checksums of the distributed files. License and attribution details are in the repository and the model and RViz packages. [LICENSE](LICENSE) · [NOTICE](NOTICE)
