@@ -4,6 +4,10 @@ ROS 2 Jazzy on Ubuntu 24.04, with a Franka Emika **Panda**, a physical gripper, 
 
 Read [CHALLENGE.md](CHALLENGE.md) or the [illustrated challenge description](assets/challenge-description.pdf) for the six tasks, workspace labels and completion rules. The tasks form one continuous run. No workpiece poses are supplied, including in Level 1.
 
+![Franka Panda in MuJoCo with the staging mat, sorting trays, fixtures and drawer](assets/challenge-scene.png)
+
+*Example starting layout in the MuJoCo challenge scene. The workpiece arrangement depends on the seed.*
+
 ## Installation
 
 Use a Linux x86-64 host, preferably Ubuntu 24.04. MuJoCo and RViz need an X11 or XWayland desktop. The image includes ROS 2 Jazzy and the simulation dependencies. Allow about 15 GB if building from source. The RGB-D cameras need OpenGL even when running without windows.
@@ -58,9 +62,46 @@ Both engines use the tag `localhost/robotics2-panda:student-jazzy`. The prebuilt
 
 ## Start with the empty workbench
 
-Start with the standard simulation before attempting the challenge. To open MuJoCo and RViz, run `./tools/panda docker-gui` with Docker Compose or `./tools/panda sim` with Podman.
+Practise arm and gripper control in the standard simulation before attempting the challenge.
 
-Once the simulator is ready, send a small joint trajectory and practise opening and closing the gripper. Use the empty workbench until you can move the arm and hand reliably, then switch to the reference challenge. [Arm control](#arm-control) · [Gripper control](#gripper-control)
+1. From the repository root, launch the empty workbench and leave that terminal running. Use the command for your engine.
+
+   ```bash
+   ./tools/panda docker-gui  # Docker Compose
+   ./tools/panda sim         # Podman
+   ```
+
+2. Open a second terminal in the repository and enter the running container. Use the command for the same engine.
+
+   ```bash
+   docker compose exec sim /opt/panda/entrypoint.sh bash  # Docker Compose
+   ./tools/panda exec bash                              # Podman
+   ```
+
+3. Run the remaining commands inside that shell. Check readiness and wait until the message shows `data: true`. If it shows `false`, run the check again after startup finishes.
+
+   ```bash
+   ros2 topic echo /panda/simulation/ready std_msgs/msg/Bool --once \
+     --qos-durability transient_local --qos-reliability reliable
+   ```
+
+4. Send a five-second arm trajectory. From the initial pose, the first joint turns by about 0.10 radians. The command prints `Target reached` when the controller completes the motion.
+
+   ```bash
+   ros2 run panda_bringup joint_goal \
+     0.10 -0.785398 0.0 -2.356194 0.0 1.570796 0.785398 --duration 5
+   ```
+
+5. Narrow the gripper to a 20 mm opening, then reopen it to 80 mm. Watch the fingers in MuJoCo and check that both actions report `success: true`.
+
+   ```bash
+   ros2 action send_goal /panda/panda_gripper/move franka_msgs/action/Move \
+     '{width: 0.02, speed: 0.03}'
+   ros2 action send_goal /panda/panda_gripper/move franka_msgs/action/Move \
+     '{width: 0.08, speed: 0.05}'
+   ```
+
+Once you can move the arm and gripper reliably, switch to the reference challenge. The sections below explain the interfaces you can use in your application. [Arm control](#arm-control) · [Gripper control](#gripper-control)
 
 ## Three environments
 
@@ -97,7 +138,8 @@ From a second terminal in the repository, open a shell in the running service. T
 
 ```bash
 docker compose exec sim /opt/panda/entrypoint.sh bash
-ros2 topic echo /panda/simulation/ready --once --qos-durability transient_local
+ros2 topic echo /panda/simulation/ready std_msgs/msg/Bool --once \
+  --qos-durability transient_local --qos-reliability reliable
 ```
 
 ### Launch options and readiness
@@ -138,7 +180,8 @@ Inside a container the corresponding launch files are `simulation.launch.py`, `c
 Wait for the startup barrier before issuing commands. Run these checks from a second host terminal with Podman, or run the `ros2` commands in the Docker shell above.
 
 ```bash
-./tools/panda exec ros2 topic echo /panda/simulation/ready --once --qos-durability transient_local
+./tools/panda exec ros2 topic echo /panda/simulation/ready std_msgs/msg/Bool --once \
+  --qos-durability transient_local --qos-reliability reliable
 ./tools/panda exec ros2 control list_controllers -c /panda/controller_manager
 ```
 
@@ -207,12 +250,7 @@ Prefer an action in your application so that you can monitor feedback, cancellat
   '{trajectory: {joint_names: [panda_joint1, panda_joint2, panda_joint3, panda_joint4, panda_joint5, panda_joint6, panda_joint7], points: [{positions: [0.0, -0.785398, 0.0, -2.356194, 0.0, 1.570796, 0.785398], velocities: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], time_from_start: {sec: 5}}]}}'
 ```
 
-A compact single-target action client is also included:
-
-```bash
-./tools/panda exec ros2 run panda_bringup joint_goal \
-  0.10 -0.785398 0.0 -2.356194 0.0 1.570796 0.785398 --duration 5
-```
+The `joint_goal` command in the walkthrough uses the same action for a single target. [Start with the empty workbench](#start-with-the-empty-workbench)
 
 ## Gripper control
 
@@ -298,19 +336,3 @@ A reset restores the **same** initial arrangement. Stop and relaunch with a diff
 Training seeds are public and repeatable. Use them to evaluate your method, not as a lookup key for object poses. During a challenge, workpiece state must come from the permitted camera observations and your action history. Robot state, calibration, object models and fixed fixture geometry are available. The repository supplies no task solver or reference trajectories.
 
 A simulator running on a machine you control cannot conceal its generated scene or seed from its owner. The final unseen seed is therefore chosen and run by the instructor in a controlled evaluation environment; it is not included in this repository or image. Submit an application that uses the documented ROS interfaces and does not depend on simulator files, state editing, privileged state feeds or seed-to-pose lookup tables. Human intervention and resets during a scored attempt follow the course rules.
-
-## Troubleshooting
-
-- **Permission error from rootless Podman:** run as your normal desktop user. Check `podman info`, subordinate UID/GID configuration and rootless storage. Use `crun`; keeping supplementary GPU groups requires it.
-- **No window or Xauthority error:** launch from the unlocked desktop session, check `echo "$DISPLAY"` and `xauth nlist "$DISPLAY"`. XWayland must be enabled under Wayland. Avoid `xhost +`.
-- **GPU/OpenGL error:** check access to `/dev/dri` and run `glxinfo -B` from the Linux desktop if available. To try Mesa software rendering, run `export PANDA_SOFTWARE_RENDERING=1` before launching. NVIDIA hosts may need a GPU setup specific to their engine and drivers.
-- **Container name already in use:** stop the previous environment with the stop command for your engine, or open a shell in that container.
-- **No motion:** confirm readiness, controller activation and that simulation is resumed. Review action result/error strings and logs. Do not issue overlapping commands from RViz and your node.
-- **High rendering load:** disable an unused camera, reduce `camera_rate`, close RViz, or use `use_rviz:=false`. Both camera streams need a rendering context even with `headless:=true`.
-- **Namespace/domain changes:** launch with `namespace:=team1` and replace `/panda` in your commands. Set `ROS_DOMAIN_ID=43` before launching to choose another domain; commands executed inside that container inherit it. A ROS domain is a discovery boundary, not an assessment security boundary.
-
-The Podman launcher reads `PANDA_IMAGE` for the image tag and `PANDA_CONTAINER` for the container name. `workspace/` and `logs/` persist on the host with either engine. Stop the container before removing generated workspace build and install directories.
-
-## Licensing
-
-`STUDENT_RELEASE.json` records the checksums of the distributed files. License and attribution details are in the repository and the model and RViz packages. [LICENSE](LICENSE) · [NOTICE](NOTICE)
