@@ -8,11 +8,33 @@ Read [CHALLENGE.md](CHALLENGE.md) or the [illustrated challenge description](ass
 
 Use a Linux x86-64 host, preferably Ubuntu 24.04. MuJoCo and RViz need an X11 or XWayland desktop. The image includes ROS 2 Jazzy and the simulation dependencies. Allow about 15 GB if building from source. The RGB-D cameras need OpenGL even when running without windows.
 
-Clone or unpack the student repository and run the host commands from its root directory. Choose one of the two installation paths below.
+Clone or unpack this repository and run the host commands from its root directory. Choose one of the two installation paths below.
+
+### Docker Compose on Linux
+
+Use local Docker Engine with the Compose plugin and default UID/GID mapping. Install the Buildx plugin for source builds. Run these checks from your normal account. The graphical launcher uses `python3`, `xauth`, and the display socket of your Linux desktop. [Docker Engine installation on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+```bash
+sudo apt install python3 xauth
+docker info
+docker compose version
+```
+
+Load the Docker archive from the course downloads. If the course supplies `SHA256SUMS`, run `sha256sum -c --ignore-missing SHA256SUMS` in the download directory first. [Docker image load](https://docs.docker.com/reference/cli/docker/image/load/)
+
+```bash
+docker image load -i /path/to/robotics2-panda-student-jazzy.docker.tar.gz
+```
+
+To build from source, run this command from the repository root. Compose uses the included `container/Containerfile`. [Docker Compose build reference](https://docs.docker.com/reference/cli/docker/compose/build/)
+
+```bash
+docker compose build
+```
 
 ### Podman
 
-Install rootless Podman with the `crun` runtime. On Ubuntu:
+Install rootless Podman with the `crun` runtime. On Ubuntu, run the following commands.
 
 ```bash
 sudo apt update
@@ -26,102 +48,55 @@ Check the host setup, then build the image or load the course archive.
 ./tools/panda build
 ```
 
-If the course provides a prebuilt image, load it instead of building:
+To use the prebuilt image, run the following command.
 
 ```bash
 ./tools/panda load /path/to/robotics2-panda-student-jazzy.oci.tar
 ```
 
-### Docker Engine on Linux
+Both engines use the tag `localhost/robotics2-panda:student-jazzy`. The prebuilt image gives everyone the same dependencies. Source builds need network access and rely on the continued availability of the versions in `versions.lock.yaml`. The image records the resolved Debian packages in `/opt/panda/packages.lock`.
 
-Use a local Docker Engine installation with the default UID/GID mapping. On Ubuntu, follow the Docker Engine installation guide, including the Buildx plugin if you plan to build the image. Run `docker info` from your normal desktop account to check that it can access the engine. Install `xauth` for the graphical launch. The commands below target native Linux and use its display socket and GPU devices. [Docker Engine installation on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+## Start with the empty workbench
 
-```bash
-sudo apt install xauth
-docker info
-```
+Start with the standard simulation before attempting the challenge. To open MuJoCo and RViz, run `./tools/panda docker-gui` with Docker Compose or `./tools/panda sim` with Podman.
 
-Load the Docker archive from the course downloads. If the course supplies `SHA256SUMS`, run `sha256sum -c --ignore-missing SHA256SUMS` in the download directory first. [Docker image load](https://docs.docker.com/reference/cli/docker/image/load/)
-
-```bash
-docker image load -i /path/to/robotics2-panda-student-jazzy.docker.tar.gz
-```
-
-To build from the student repository, use the included `container/Containerfile`. `--load` makes the built image available to `docker run`. [Docker Buildx reference](https://docs.docker.com/reference/cli/docker/buildx/build/)
-
-```bash
-docker buildx build --load --platform linux/amd64 --target runtime \
-  -f container/Containerfile -t localhost/robotics2-panda:student-jazzy .
-```
-
-Both paths use the tag `localhost/robotics2-panda:student-jazzy`. The prebuilt image gives everyone the same dependencies. Source builds need network access and rely on the continued availability of the versions in `versions.lock.yaml`. The image records the resolved Debian packages in `/opt/panda/packages.lock`.
+Once the simulator is ready, send a small joint trajectory and practise opening and closing the gripper. Use the empty workbench until you can move the arm and hand reliably, then switch to the reference challenge. [Arm control](#arm-control) · [Gripper control](#gripper-control)
 
 ## Three environments
 
 Run one environment at a time. MuJoCo and RViz open as desktop windows; MoveIt starts with them.
 
-| Podman command | ROS launch file | Environment |
+| Podman command | Compose `PANDA_SCENE` | Environment |
 | --- | --- | --- |
-| `./tools/panda sim` | `simulation.launch.py` | Empty workbench with the Panda, hand and flat surface. |
-| `./tools/panda competition` | `competition.launch.py` | Complete challenge with reference seed `0`. |
-| `./tools/panda competition-randomized` | `competition_randomized.launch.py` | Complete challenge with a fresh randomized arrangement at launch. |
+| `./tools/panda sim` | `simulation` | Empty workbench with the Panda, hand and flat surface. |
+| `./tools/panda competition` | `competition` | Complete challenge with reference seed `0`. |
+| `./tools/panda competition-randomized` | `competition_randomized` | Complete challenge with a fresh randomized arrangement at launch. |
 
-### Launch with Docker
+### Launch with Docker Compose
 
-Run this block in Bash from the student repository. Set `panda_launch` to a launch file from the table above. Put any ROS launch arguments in `panda_launch_args`, for example `(seed:=42)` for a repeatable randomized training run. Set `panda_gui=0` to run without the MuJoCo and RViz windows while keeping the challenge cameras and MoveIt available.
+For a headless run, prepare the workspace and use Compose directly. The cameras use Mesa software rendering in this mode. Choose one `up` command at a time.
 
 ```bash
-(
-  set -e -o pipefail
-  panda_launch=competition_randomized.launch.py
-  panda_launch_args=()
-  panda_gui=1
-  panda_docker_args=()
+mkdir -p workspace/src logs
+export PANDA_UID="$(id -u)" PANDA_GID="$(id -g)"
 
-  mkdir -p workspace/src logs
-  if [[ "${PANDA_SOFTWARE_RENDERING:-0}" != 1 ]]; then
-    for panda_device in /dev/dri/card* /dev/dri/renderD*; do
-      if [[ -c "$panda_device" ]]; then
-        panda_docker_args+=(--device "$panda_device" --group-add "$(stat -c '%g' "$panda_device")")
-      fi
-    done
-  fi
-  if ((${#panda_docker_args[@]} == 0)); then
-    panda_docker_args+=(-e LIBGL_ALWAYS_SOFTWARE=1)
-    if [[ "$panda_gui" == 0 ]]; then
-      panda_docker_args+=(-e EGL_PLATFORM=surfaceless)
-    fi
-  fi
-
-  if [[ "$panda_gui" == 1 ]]; then
-    panda_xauth=$(mktemp)
-    trap 'rm -f "$panda_xauth"' EXIT
-    xauth nlist "${DISPLAY:?Run from your Linux desktop session}" |
-      sed 's/^..../ffff/' | xauth -f "$panda_xauth" nmerge -
-    if [[ ! -s "$panda_xauth" ]]; then
-      echo "No Xauthority entry for $DISPLAY. Check your desktop session." >&2
-      exit 1
-    fi
-    panda_docker_args+=(-e DISPLAY -e XAUTHORITY=/tmp/student.Xauthority
-      -v /tmp/.X11-unix:/tmp/.X11-unix:ro
-      -v "$panda_xauth:/tmp/student.Xauthority:ro")
-  else
-    panda_launch_args+=(headless:=true use_rviz:=false)
-  fi
-
-  docker run --rm -it --init --stop-signal SIGINT \
-    --name "robotics2-student-$(id -u)" --user "$(id -u):$(id -g)" \
-    -e HOME=/tmp/student-home -e ROS_LOG_DIR=/data/log -e "ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-42}" \
-    -v "$PWD/workspace:/workspaces/student" -v "$PWD/logs:/data/log" \
-    "${panda_docker_args[@]}" localhost/robotics2-panda:student-jazzy \
-    ros2 launch panda_bringup "$panda_launch" "${panda_launch_args[@]}"
-)
+docker compose up                                              # Empty workbench
+PANDA_SCENE=competition docker compose up                       # Reference challenge
+PANDA_SCENE=competition_randomized PANDA_SEED=42 docker compose up
 ```
 
-From a second terminal, open a shell in the running container. The entrypoint loads ROS and your built workspace. You can run every `ros2` command from this README in that shell by dropping the `./tools/panda exec` prefix. Use Ctrl+C in the launch terminal or `docker stop --time 20 "robotics2-student-$(id -u)"` to stop the simulation. [Docker runtime options](https://docs.docker.com/engine/containers/run/)
+For MuJoCo and RViz windows, run the graphical launcher from your Linux desktop. It creates the temporary Xauthority file, selects the available Mesa GPU devices, and starts the same Compose service.
 
 ```bash
-docker exec -it "robotics2-student-$(id -u)" /opt/panda/entrypoint.sh bash
+PANDA_SCENE=competition_randomized PANDA_SEED=42 ./tools/panda docker-gui
+```
+
+Omit `PANDA_SEED` to use the scene's default. To pass extra launch options, set `PANDA_LAUNCH_ARGS` to a space-separated list such as `'wrist_camera:=false camera_rate:=3'` before either launch command.
+
+From a second terminal in the repository, open a shell in the running service. The entrypoint loads ROS and your built workspace. Run the `ros2` commands from this README in that shell by dropping the `./tools/panda exec` prefix. Stop with Ctrl+C or `docker compose down`. [Docker Compose quickstart](https://docs.docker.com/compose/gettingstarted/)
+
+```bash
+docker compose exec sim /opt/panda/entrypoint.sh bash
 ros2 topic echo /panda/simulation/ready --once --qos-durability transient_local
 ```
 
@@ -177,7 +152,7 @@ Readiness must be `true`; `joint_state_broadcaster` and `panda_arm_controller` m
 
 The host directory `workspace/` is mounted at `/workspaces/student`. Your source, build and install outputs persist after the simulator exits. `logs/` contains ROS logs. Simulator runtime files remain inside the disposable container.
 
-With an environment running, open a shell with `./tools/panda exec bash` for Podman or the `docker exec` command above. Then run the following inside the container.
+With an environment running, open a shell with `./tools/panda exec bash` for Podman or the `docker compose exec` command above. Then run the following inside the container.
 
 ```bash
 cd /workspaces/student
@@ -188,7 +163,7 @@ source install/setup.bash
 exit
 ```
 
-Every new `./tools/panda exec ...` loads ROS, the simulator packages and an existing student workspace overlay. An already open shell must source the overlay again after building. Use `./tools/panda shell --headless` for development without starting the simulator. It uses the same container name, so stop the environment first.
+Every new `./tools/panda exec ...` loads ROS, the simulator packages and your workspace overlay if you have built it. An already open shell must source the overlay again after building. Use `./tools/panda shell --headless` for development without starting the simulator. It uses the same container name, so stop the environment first.
 
 Set `use_sim_time:=true` on your own nodes. All positions and dimensions use SI units: radians, metres and seconds. Use the timestamps in camera messages when looking up TF.
 
@@ -273,7 +248,7 @@ A standard interface is also available at `/panda/panda_gripper/gripper_action` 
   '{command: {position: 0.04, max_effort: 0.0}}'
 ```
 
-The topics and Franka action types support later transfer to the matching Panda hardware stack. This student image contains the simulator, not a physical robot driver. Real hardware requires instructor setup, calibration and safety validation.
+The topics and Franka action types support later transfer to the matching Panda hardware stack. Real hardware requires instructor setup, calibration and safety validation.
 
 ## MoveIt and RViz
 
@@ -338,4 +313,4 @@ The Podman launcher reads `PANDA_IMAGE` for the image tag and `PANDA_CONTAINER` 
 
 ## Licensing
 
-See [LICENSE](LICENSE), [NOTICE](NOTICE) and the retained model/RViz licenses. `STUDENT_RELEASE.json` records the checksums of the distributed repository files. The image is built from this student-only context and contains installed simulator packages without course solution scripts or instructor validation artifacts.
+`STUDENT_RELEASE.json` records the checksums of the distributed files. License and attribution details are in the repository and the model and RViz packages. [LICENSE](LICENSE) · [NOTICE](NOTICE)

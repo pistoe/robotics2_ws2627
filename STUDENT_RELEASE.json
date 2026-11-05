@@ -10,9 +10,10 @@
     "CHALLENGE.md": "881be4df9b80739fed6991535845679344f57502f0d9b494f48ac9e7f5e31d1c",
     "LICENSE": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9",
     "NOTICE": "81cde457ff48ee696af96bfcd86495974ff24c3c3fa31ca81512c37d11834410",
-    "README.md": "76e9db1b2bdee2e9115d0866089a6e0c1903539a0aa5d5ee64766969bb329a6d",
+    "README.md": "f02faac4fa15a7c952c7b2a40d2bb24e0104614da67f500c62cd06bc5b604285",
     "assets/challenge-description.pdf": "5f5c1bf2ec946e4bbbf7e2ff8588684d877560580167e3375ece037f2a09f816",
     "assets/product-P1.png": "5f66443e91bccd0126c730527fc6c4e1b65354380d81b0c566e8e916d44180cd",
+    "compose.yaml": "b9dde82e80278e079c548d6502f6792a81427757d91e43408fbd8c7b5e7fce28",
     "container/Containerfile": "84542878fac95e46dc6e3740a3069de8bb2a1973e28fdabc6d56ad3f24d51453",
     "container/entrypoint.sh": "21721b9ed596cea23b82b42550aa4ed4b6550e2d94f937e9c2d8233109035f48",
     "container/patches/mujoco-runtime.patch": "97c39c52812866dc893b95b25dc12439aaf07c83dd3829b3fba16867ed64f7e8",
@@ -737,7 +738,7 @@
     "src/panda_rviz/package.xml": "f2b57f18a416d3561c23bd4d5a6afcd5d08ad54ef5827164dee6b74ccc8feb50",
     "src/panda_rviz/plugins.xml": "c83ed64bcefa1174b1228aadb6a27f6efc32b5c3b420208df142d6d3e43ba235",
     "src/panda_rviz/src/image_display.cpp": "6ec00090684368428794f21c40c9a48bbd63caa2e6e94ceb22f9b85a5cdfb3b6",
-    "tools/panda": "5bc6f8d2c6ece41707f034b3edb9817467881c734df4f219495a820c633750c1",
+    "tools/panda": "4814c0c00c62bf0a793e374dbd6339bd6b8985a9066f4211f705097ca7f00a30",
     "versions.lock.yaml": "820467c0e9ef2b2552c202ccf9f19e182a462c884b055ced6b6c09eddc53c18a",
     "workspace/src/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   }

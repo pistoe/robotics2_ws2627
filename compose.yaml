@@ -1,0 +1,56 @@
+services:
+  sim:
+    image: ${PANDA_IMAGE:-localhost/robotics2-panda:student-jazzy}
+    platform: linux/amd64
+    pull_policy: never
+    build:
+      context: .
+      dockerfile: container/Containerfile
+      target: runtime
+    init: true
+    stop_signal: SIGINT
+    stop_grace_period: 20s
+    user: "${PANDA_UID:-1000}:${PANDA_GID:-1000}"
+    environment:
+      HOME: /tmp/student-home
+      ROS_LOG_DIR: /data/log
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-42}
+      PANDA_SCENE: ${PANDA_SCENE:-simulation}
+      PANDA_SEED: ${PANDA_SEED:-}
+      PANDA_LAUNCH_ARGS: ${PANDA_LAUNCH_ARGS:-}
+      PANDA_HEADLESS: "true"
+      PANDA_SOFTWARE_RENDERING: "1"
+    volumes:
+      - type: bind
+        source: ./workspace
+        target: /workspaces/student
+        bind:
+          create_host_path: false
+          selinux: z
+      - type: bind
+        source: ./logs
+        target: /data/log
+        bind:
+          create_host_path: false
+          selinux: z
+    command:
+      - bash
+      - -c
+      - |
+        case "$$PANDA_SCENE" in
+          simulation|competition|competition_randomized) ;;
+          *) echo "Unknown PANDA_SCENE: $$PANDA_SCENE" >&2; exit 2 ;;
+        esac
+        args=()
+        if [[ "$$PANDA_HEADLESS" == true ]]; then
+          args+=(headless:=true use_rviz:=false)
+          export EGL_PLATFORM=surfaceless
+        fi
+        if [[ "$$PANDA_SOFTWARE_RENDERING" == 1 ]]; then
+          export LIBGL_ALWAYS_SOFTWARE=1
+        fi
+        if [[ "$$PANDA_SCENE" != simulation && -n "$$PANDA_SEED" ]]; then
+          args+=("seed:=$$PANDA_SEED")
+        fi
+        read -r -a extra_args <<< "$$PANDA_LAUNCH_ARGS"
+        exec ros2 launch panda_bringup "$$PANDA_SCENE.launch.py" "$${args[@]}" "$${extra_args[@]}"

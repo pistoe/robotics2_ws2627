@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import argparse
+import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -14,6 +16,56 @@ NAME = os.environ.get("PANDA_CONTAINER", f"robotics2-student-{os.getuid()}")
 
 def call(command, **kwargs):
     return subprocess.run(command, check=True, **kwargs)
+
+
+def display_authority(temporary):
+    display = os.environ.get("DISPLAY")
+    if not display or not Path("/tmp/.X11-unix").is_dir():
+        raise RuntimeError("No X11/XWayland display. Run from a desktop terminal or use headless mode.")
+    records = call(["xauth", "nlist", display], capture_output=True, text=True).stdout
+    if not records.strip():
+        raise RuntimeError("No Xauthority entry. Check DISPLAY and XAUTHORITY in your desktop terminal.")
+    authority = Path(temporary) / "Xauthority"
+    authority.touch(mode=0o600)
+    records = "\n".join("ffff" + line[4:] for line in records.splitlines()) + "\n"
+    call(["xauth", "-f", str(authority), "nmerge", "-"], input=records, text=True)
+    return display, authority
+
+
+def docker_gui():
+    call(["docker", "compose", "version"], stdout=subprocess.DEVNULL)
+    (ROOT / "workspace/src").mkdir(parents=True, exist_ok=True)
+    (ROOT / "logs").mkdir(exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="robotics2-display-") as temporary:
+        display, authority = display_authority(temporary)
+        devices = []
+        groups = set()
+        if os.environ.get("PANDA_SOFTWARE_RENDERING") != "1":
+            for device in sorted(Path("/dev/dri").glob("*")):
+                device_info = device.stat()
+                if stat.S_ISCHR(device_info.st_mode):
+                    devices.append(f"{device}:{device}")
+                    groups.add(str(device_info.st_gid))
+        service = {
+            "environment": {
+                "DISPLAY": display,
+                "XAUTHORITY": "/tmp/student.Xauthority",
+                "PANDA_HEADLESS": "false",
+                "PANDA_SOFTWARE_RENDERING": "0" if devices else "1",
+            },
+            "volumes": [
+                {"type": "bind", "source": "/tmp/.X11-unix", "target": "/tmp/.X11-unix", "read_only": True},
+                {"type": "bind", "source": str(authority), "target": "/tmp/student.Xauthority", "read_only": True},
+            ],
+        }
+        if devices:
+            service.update(devices=devices, group_add=sorted(groups))
+        if Path("/sys/fs/selinux/enforce").exists():
+            service["security_opt"] = ["label=disable"]
+        override = Path(temporary) / "display.yaml"
+        override.write_text(json.dumps({"services": {"sim": service}}))
+        env = {**os.environ, "PANDA_UID": str(os.getuid()), "PANDA_GID": str(os.getgid())}
+        call(["docker", "compose", "-f", "compose.yaml", "-f", str(override), "up", "sim"], cwd=ROOT, env=env)
 
 
 def run(command, gui, render=False):
@@ -31,16 +83,7 @@ def run(command, gui, render=False):
         args += ["-it"]
     with tempfile.TemporaryDirectory(prefix="robotics2-display-") as temporary:
         if gui:
-            display = os.environ.get("DISPLAY")
-            if not display or not Path("/tmp/.X11-unix").exists():
-                raise RuntimeError("No X11/XWayland display; use headless:=true use_rviz:=false or a desktop terminal.")
-            records = call(["xauth", "nlist", display], capture_output=True, text=True).stdout
-            if not records.strip():
-                raise RuntimeError("No Xauthority entry; check DISPLAY and XAUTHORITY in your desktop terminal.")
-            authority = Path(temporary) / "Xauthority"
-            authority.touch(mode=0o600)
-            records = "\n".join("ffff" + line[4:] for line in records.splitlines()) + "\n"
-            call(["xauth", "-f", str(authority), "nmerge", "-"], input=records, text=True)
+            display, authority = display_authority(temporary)
             args += ["--env", f"DISPLAY={display}", "--env", "XAUTHORITY=/tmp/student.Xauthority",
                      "--volume", "/tmp/.X11-unix:/tmp/.X11-unix:ro",
                      "--volume", f"{authority}:/tmp/student.Xauthority:ro"]
@@ -57,9 +100,14 @@ def run(command, gui, render=False):
 def main():
     parser = argparse.ArgumentParser(description="Robotics 2 student simulation")
     parser.add_argument("command", choices=["build", "load", "sim", "competition", "competition-randomized",
-                                             "exec", "shell", "stop", "doctor"])
+                                             "exec", "shell", "stop", "doctor", "docker-gui"])
     parser.add_argument("args", nargs=argparse.REMAINDER)
     options = parser.parse_args()
+    if options.command == "docker-gui":
+        if options.args:
+            parser.error("set PANDA_SCENE and PANDA_SEED before running docker-gui")
+        docker_gui()
+        return
     if not shutil.which("podman"):
         raise RuntimeError("Podman is not installed")
     if options.command == "build":
