@@ -1,0 +1,348 @@
+diff --git a/mujoco_ros2_control/CMakeLists.txt b/mujoco_ros2_control/CMakeLists.txt
+index b8b0dda..d50cfa4 100644
+--- a/mujoco_ros2_control/CMakeLists.txt
++++ b/mujoco_ros2_control/CMakeLists.txt
+@@ -23,6 +23,7 @@ find_package(realtime_tools REQUIRED)
+ find_package(rosgraph_msgs REQUIRED)
+ find_package(sensor_msgs REQUIRED)
+ find_package(std_msgs REQUIRED)
++find_package(std_srvs REQUIRED)
+ find_package(mujoco_ros2_control_msgs REQUIRED)
+ find_package(mujoco_ros2_control_plugins REQUIRED)
+ find_package(Threads REQUIRED)
+@@ -190,6 +191,7 @@ PUBLIC
+   realtime_tools::realtime_tools
+   ${rosgraph_msgs_TARGETS}
+   ${sensor_msgs_TARGETS}
++  ${std_srvs_TARGETS}
+ PRIVATE
+   mujoco_simulate
+   Threads::Threads
+@@ -279,6 +281,7 @@ ament_export_dependencies(
+   realtime_tools
+   rosgraph_msgs
+   sensor_msgs
++  std_srvs
+   geometry_msgs
+   nav_msgs
+   mujoco_ros2_control_msgs
+diff --git a/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_simulation.hpp b/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_simulation.hpp
+index 68e5881..4dc1ccd 100644
+--- a/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_simulation.hpp
++++ b/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_simulation.hpp
+@@ -47,6 +47,8 @@
+ #include <mujoco_ros2_control_msgs/srv/step_simulation.hpp>
+ #include <mujoco_ros2_control_plugins/mujoco_ros2_control_plugins_base.hpp>
+ #include <sensor_msgs/msg/joint_state.hpp>
++#include <std_msgs/msg/empty.hpp>
++#include <std_srvs/srv/trigger.hpp>
+ 
+ namespace mujoco_ros2_control
+ {
+@@ -178,6 +180,7 @@ public:
+    * @brief Start the physics thread. Must be called after load_model().
+    */
+   void start_physics_thread();
++  void require_control_ready();
+ 
+   /**
+    * @brief Stop the physics and UI threads if they are running.
+@@ -525,6 +528,10 @@ private:
+ 
+   // True when running without a display (no GLFW window)
+   bool headless_{ false };
++  bool managed_control_{ false };
++  std::atomic<bool> control_barrier_{ false };
++  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr release_control_service_;
++  rclcpp::Publisher<std_msgs::msg::Empty>::SharedPtr world_reset_publisher_;
+ 
+   // Primary simulate object
+   std::unique_ptr<mujoco::Simulate> sim_;
+diff --git a/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_system_interface.hpp b/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_system_interface.hpp
+index 3d6475b..9c3495c 100644
+--- a/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_system_interface.hpp
++++ b/mujoco_ros2_control/include/mujoco_ros2_control/mujoco_system_interface.hpp
+@@ -19,6 +19,8 @@
+ 
+ #pragma once
+ 
++#include <atomic>
++#include <chrono>
+ #include <memory>
+ #include <string>
+ #include <thread>
+@@ -313,6 +315,10 @@ private:
+   realtime_tools::RealtimePublisher<sensor_msgs::msg::JointState>::SharedPtr actuator_state_realtime_publisher_ =
+       nullptr;
+   sensor_msgs::msg::JointState actuator_state_msg_;
++  realtime_tools::RealtimePublisher<sensor_msgs::msg::JointState>::SharedPtr paused_state_publisher_;
++  sensor_msgs::msg::JointState paused_state_msg_;
++  mjtNum last_state_time_{ -1.0 };
++  std::chrono::steady_clock::time_point paused_state_deadline_{};
+ 
+   // Floating base state publisher
+   std::shared_ptr<rclcpp::Publisher<nav_msgs::msg::Odometry>> floating_base_publisher_ = nullptr;
+@@ -335,6 +341,7 @@ private:
+ 
+   // Per-step robot state snapshot used by `read` and `write`.
+   MujocoSimulation::ControlState control_state_;
++  std::atomic<bool> reset_pending_{ false };
+ 
+   // Data containers for the MuJoCo Actuators
+   std::vector<MuJoCoActuatorData> mujoco_actuator_data_;
+diff --git a/mujoco_ros2_control/package.xml b/mujoco_ros2_control/package.xml
+index c71461d..9ab9f7c 100644
+--- a/mujoco_ros2_control/package.xml
++++ b/mujoco_ros2_control/package.xml
+@@ -38,6 +38,7 @@
+   <depend>rosgraph_msgs</depend>
+   <depend>sensor_msgs</depend>
+   <depend>std_msgs</depend>
++  <depend>std_srvs</depend>
+   <!-- NOTE: Ensure to update this as humble, jazzy, and kilted go end of life. -->
+   <depend condition="$ROS_DISTRO != humble and $ROS_DISTRO != jazzy and $ROS_DISTRO != kilted">tinyxml2</depend>
+   <depend condition="$ROS_DISTRO == humble or $ROS_DISTRO == jazzy or $ROS_DISTRO == kilted">tinyxml2_vendor</depend>
+diff --git a/mujoco_ros2_control/src/mujoco_ros2_control_node.cpp b/mujoco_ros2_control/src/mujoco_ros2_control_node.cpp
+index c0daa6d..8effa73 100644
+--- a/mujoco_ros2_control/src/mujoco_ros2_control_node.cpp
++++ b/mujoco_ros2_control/src/mujoco_ros2_control_node.cpp
+@@ -141,7 +141,7 @@ int main(int argc, char ** argv)
+       // TODO: Potentially remove this node depending on what comes out of the upstream PR:
+       // https://github.com/ros-controls/ros2_control/pull/2654
+       cm->get_clock()->wait_until_started();
+-      cm->get_clock()->sleep_for(rclcpp::Duration::from_seconds(1.0 / cm->get_update_rate()));
++      std::this_thread::sleep_for(std::chrono::nanoseconds(1'000'000'000 / cm->get_update_rate()));
+ 
+       // for calculating sleep time
+       auto const period = std::chrono::nanoseconds(1'000'000'000 / cm->get_update_rate());
+@@ -156,7 +156,8 @@ int main(int argc, char ** argv)
+       {
+         // calculate measured period
+         auto const current_time = get_cm_now(cm);
+-        auto const measured_period = current_time - previous_time;
++        auto const measured_period = current_time > previous_time ? current_time - previous_time :
++          rclcpp::Duration::from_nanoseconds(period.count());
+         previous_time = current_time;
+ 
+         // execute update loop
+@@ -170,7 +171,12 @@ int main(int argc, char ** argv)
+           try
+           {
+             // `sleep_until` may throw if sim time stops (e.g., simulation shutdown).
+-            cm->get_clock()->sleep_until(current_time + period);
++            const auto deadline = std::chrono::steady_clock::now() + period;
++            while (rclcpp::ok() && cm->get_clock()->now() < current_time + period &&
++                   std::chrono::steady_clock::now() < deadline)
++            {
++              std::this_thread::sleep_for(50us);
++            }
+           }
+           catch (const std::runtime_error & e)
+           {
+diff --git a/mujoco_ros2_control/src/mujoco_simulation.cpp b/mujoco_ros2_control/src/mujoco_simulation.cpp
+index ef23ea9..42c1f6b 100644
+--- a/mujoco_ros2_control/src/mujoco_simulation.cpp
++++ b/mujoco_ros2_control/src/mujoco_simulation.cpp
+@@ -650,6 +650,16 @@ bool MujocoSimulation::initialize(rclcpp::Node::SharedPtr node, const std::strin
+ 
+   // Time publisher will be pushed from the physics_thread_
+   RCLCPP_INFO(get_logger(), "Constructing clock publisher.");
++  world_reset_publisher_ = node_->create_publisher<std_msgs::msg::Empty>("~/world_reset", 10);
++  release_control_service_ = node_->create_service<std_srvs::srv::Trigger>(
++      "~/release_control", [this](const std::shared_ptr<std_srvs::srv::Trigger::Request>,
++                                 std::shared_ptr<std_srvs::srv::Trigger::Response> response) {
++        const std::unique_lock<std::recursive_mutex> lock(*sim_mutex_);
++        sim_->run = false;
++        control_barrier_ = false;
++        response->success = true;
++        response->message = "Control barrier released; simulation remains paused.";
++      });
+   clock_publisher_ = node_->create_publisher<rosgraph_msgs::msg::Clock>("/clock", 1);
+   clock_realtime_publisher_ =
+       std::make_shared<realtime_tools::RealtimePublisher<rosgraph_msgs::msg::Clock>>(clock_publisher_);
+@@ -781,6 +791,18 @@ void MujocoSimulation::set_pre_step_callback(PreStepCallback callback)
+   pre_step_callback_ = std::move(next);
+ }
+ 
++void MujocoSimulation::require_control_ready()
++{
++  const std::unique_lock<std::recursive_mutex> lock(*sim_mutex_);
++  managed_control_ = true;
++  control_barrier_ = true;
++  sim_->run = false;
++  // A nonzero, frozen epoch lets ROS clocks start without integrating physics.
++  mj_data_->time = std::max(mj_data_->time, 1e-9);
++  publish_control_state();
++  publish_clock();
++}
++
+ void MujocoSimulation::start_physics_thread()
+ {
+   // Disable the rangefinder flag at startup so that we don't get the yellow lines.
+@@ -914,6 +936,16 @@ void MujocoSimulation::reset_world_state(bool fill_initial_state,
+   {
+     reset_callback_(fill_initial_state);
+   }
++  if (managed_control_)
++  {
++    control_barrier_ = true;
++    sim_->run = false;
++    pending_steps_.store(0);
++    steps_interrupted_.store(true);
++    steps_cv_.notify_all();
++    world_reset_publisher_->publish(std_msgs::msg::Empty());
++    publish_clock();
++  }
+ }
+ 
+ void MujocoSimulation::reset_world_callback(
+@@ -970,6 +1002,13 @@ void MujocoSimulation::reset_world_callback(
+ void MujocoSimulation::set_pause_callback(const std::shared_ptr<mujoco_ros2_control_msgs::srv::SetPause::Request> request,
+                                           std::shared_ptr<mujoco_ros2_control_msgs::srv::SetPause::Response> response)
+ {
++  const std::unique_lock<std::recursive_mutex> lock(*sim_mutex_);
++  if (!request->paused && control_barrier_)
++  {
++    response->success = false;
++    response->message = "Controller readiness/reset recovery is pending.";
++    return;
++  }
+   const bool currently_paused = !sim_->run;
+   if (currently_paused == request->paused)
+   {
+@@ -1010,7 +1049,7 @@ void MujocoSimulation::step_simulation_callback(
+     const std::shared_ptr<mujoco_ros2_control_msgs::srv::StepSimulation::Request> request,
+     std::shared_ptr<mujoco_ros2_control_msgs::srv::StepSimulation::Response> response)
+ {
+-  if (sim_->run)
++  if (sim_->run || control_barrier_)
+   {
+     response->success = false;
+     response->message = "Cannot step simulation: simulation is not paused.";
+@@ -1435,7 +1474,7 @@ void MujocoSimulation::physics_loop()
+       // Detect if a reset occurred via the UI (Sync() processed pending_.reset)
+       // This is detected by simulation time jumping backwards to near-zero
+       // The render loop's Sync() calls mj_resetData() which resets time to 0
+-      if (mj_model_ && mj_data_ && prevSimTime > 0.1 && mj_data_->time < 0.01)
++      if (mj_model_ && mj_data_ && mj_data_->time < prevSimTime && mj_data_->time < 0.01)
+       {
+         RCLCPP_DEBUG(get_logger(), "UI reset detected (time jumped from %.3f to %.3f), applying initial state...",
+                      prevSimTime, mj_data_->time);
+@@ -1452,6 +1491,12 @@ void MujocoSimulation::physics_loop()
+         RCLCPP_INFO(get_logger(), "Successfully applied initial state after UI reset.");
+       }
+ 
++      if (control_barrier_)
++      {
++        sim_->run = false;
++        keyboard_step_requested_.store(false);
++        pending_steps_.store(0);
++      }
+       // run only if model is present
+       if (mj_model_)
+       {
+@@ -1653,6 +1698,7 @@ void MujocoSimulation::physics_loop()
+             refresh_data_snapshot();
+           }
+           publish_control_state();
++          publish_clock();
+         }
+ 
+         // Update previous simulation time for next iteration
+diff --git a/mujoco_ros2_control/src/mujoco_system_interface.cpp b/mujoco_ros2_control/src/mujoco_system_interface.cpp
+index 7449e00..96f0f59 100644
+--- a/mujoco_ros2_control/src/mujoco_system_interface.cpp
++++ b/mujoco_ros2_control/src/mujoco_system_interface.cpp
+@@ -23,6 +23,7 @@
+ #include <fmt/ranges.h>
+ 
+ #include <chrono>
++#include <cmath>
+ #include <cstdint>
+ #include <filesystem>
+ #include <memory>
+@@ -471,7 +472,18 @@ MujocoSystemInterface::on_init(const hardware_interface::HardwareComponentInterf
+   simulation_->capture_initial_state();
+ 
+   // This CB will be triggered by the MujocoSimulation after resettting the sim and qpos/qvel/ctrl have been restored.
+-  simulation_->set_reset_callback([this](bool fill_initial_state) { this->reset_simulation_state(fill_initial_state); });
++  const auto paused = get_hardware_info().hardware_parameters.find("start_paused");
++  const bool managed_reset = paused != get_hardware_info().hardware_parameters.end() && paused->second == "true";
++  simulation_->set_reset_callback([this, managed_reset](bool fill_initial_state) {
++    if (managed_reset)
++    {
++      reset_pending_.store(true);
++    }
++    else
++    {
++      this->reset_simulation_state(fill_initial_state);
++    }
++  });
+ 
+ #if !ROS_DISTRO_HUMBLE
+   // Verify the update rate
+@@ -487,6 +499,20 @@ MujocoSystemInterface::on_init(const hardware_interface::HardwareComponentInterf
+       static_cast<unsigned long>(get_hardware_info().rw_rate));
+ #endif
+ 
++  if (managed_reset)
++  {
++    simulation_->require_control_ready();
++    paused_state_publisher_ =
++        std::make_shared<realtime_tools::RealtimePublisher<sensor_msgs::msg::JointState>>(
++            mujoco_node_->create_publisher<sensor_msgs::msg::JointState>("joint_states", 10));
++    for (const auto& joint : urdf_joint_data_)
++    {
++      paused_state_msg_.name.push_back(joint.name);
++    }
++    paused_state_msg_.position.resize(urdf_joint_data_.size());
++    paused_state_msg_.velocity.resize(urdf_joint_data_.size());
++    paused_state_msg_.effort.resize(urdf_joint_data_.size());
++  }
+   // Start the physics thread.
+   simulation_->start_physics_thread();
+ 
+@@ -910,6 +936,12 @@ MujocoSystemInterface::perform_command_mode_switch(const std::vector<std::string
+ 
+ hardware_interface::return_type MujocoSystemInterface::read(const rclcpp::Time& time, const rclcpp::Duration& /*period*/)
+ {
++  // Reset interfaces on the control thread, never concurrently with controller updates.
++  if (reset_pending_.exchange(false))
++  {
++    const std::unique_lock<std::recursive_mutex> lock(simulation_->mutex());
++    reset_simulation_state(false);
++  }
+   // Snapshot the per-step control state to avoid having to copy the whole scene data.
+   simulation_->copy_control_state(control_state_);
+ 
+@@ -939,6 +971,30 @@ hardware_interface::return_type MujocoSystemInterface::read(const rclcpp::Time&
+ 
+   actuator_state_to_joint_state();
+ 
++  // A slower JSB stops updating on frozen ROS time; late observers still need state.
++  if (paused_state_publisher_)
++  {
++    const auto now = std::chrono::steady_clock::now();
++    if (control_state_.time != last_state_time_)
++    {
++      last_state_time_ = control_state_.time;
++      paused_state_deadline_ = now + std::chrono::milliseconds(100);
++    }
++    else if (now >= paused_state_deadline_ && std::abs(control_state_.time - time.seconds()) < 1e-6)
++    {
++      paused_state_msg_.header.stamp = time;
++      for (size_t i = 0; i < urdf_joint_data_.size(); ++i)
++      {
++        const auto& joint = urdf_joint_data_[i];
++        paused_state_msg_.position[i] = joint.position_interface.state_;
++        paused_state_msg_.velocity[i] = joint.velocity_interface.state_;
++        paused_state_msg_.effort[i] = joint.effort_interface.state_;
++      }
++      paused_state_publisher_->try_publish(paused_state_msg_);
++      paused_state_deadline_ = now + std::chrono::milliseconds(100);
++    }
++  }
++
+   // IMU Sensor data
+   for (auto& data : imu_sensor_data_)
+   {

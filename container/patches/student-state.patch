@@ -1,0 +1,40 @@
+--- a/mujoco_ros2_control/src/mujoco_simulation.cpp
++++ b/mujoco_ros2_control/src/mujoco_simulation.cpp
+@@ -683,7 +683,6 @@
+   reset_world_cb_group_ = node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+   set_pause_cb_group_ = node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+   step_simulation_cb_group_ = node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+-  set_free_joint_state_cb_group_ = node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+ 
+   reset_world_service_ = node_->create_service<mujoco_ros2_control_msgs::srv::ResetWorld>(
+       "~/reset_world",
+@@ -702,13 +701,6 @@
+       std::bind(&MujocoSimulation::step_simulation_callback, this, std::placeholders::_1, std::placeholders::_2),
+       qos_services, step_simulation_cb_group_);
+   RCLCPP_INFO(get_logger(), "Created step_simulation service at: %s/step_simulation", node_->get_fully_qualified_name());
+-
+-  set_free_joint_state_service_ = node_->create_service<mujoco_ros2_control_msgs::srv::SetFreeJointState>(
+-      "~/set_free_joint_state",
+-      std::bind(&MujocoSimulation::set_free_joint_state_callback, this, std::placeholders::_1, std::placeholders::_2),
+-      qos_services, set_free_joint_state_cb_group_);
+-  RCLCPP_INFO(get_logger(), "Created set_free_joint_state service at: %s/set_free_joint_state",
+-              node_->get_fully_qualified_name());
+ 
+   // Finish initialization by loading the model and initializing the model and control data containers.
+   RCLCPP_INFO(get_logger(), "Loading model...");
+@@ -952,6 +944,15 @@
+     const std::shared_ptr<mujoco_ros2_control_msgs::srv::ResetWorld::Request> request,
+     std::shared_ptr<mujoco_ros2_control_msgs::srv::ResetWorld::Response> response)
+ {
++  if (!request->keyframe.empty() || !request->state_overrides.joint_states.name.empty() ||
++      !request->state_overrides.joint_states.position.empty() ||
++      !request->state_overrides.joint_states.velocity.empty() ||
++      !request->state_overrides.joint_states.effort.empty() || !request->state_overrides.free_joints.empty())
++  {
++    response->success = false;
++    response->message = "Only an unmodified initial-state reset is supported.";
++    return;
++  }
+   RCLCPP_INFO_EXPRESSION(get_logger(), !request->keyframe.empty(), "Reset world service called with keyframe: '%s'",
+                          request->keyframe.c_str());
+   RCLCPP_INFO_EXPRESSION(get_logger(), request->keyframe.empty(),

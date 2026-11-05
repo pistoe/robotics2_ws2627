@@ -1,0 +1,11 @@
+<mujoco model="Panda empty scene">
+  <include file="panda.xml" />
+  <statistic center="0.25 0 0.45" extent="1.5" />
+  <visual>
+    <global azimuth="135" elevation="-25" />
+    <headlight ambient="0.3 0.3 0.3" diffuse="0.7 0.7 0.7" />
+  </visual>
+  <worldbody>
+    <geom name="floor" type="plane" size="2 2 0.01" pos="0 0 -0.01" rgba="0.22 0.25 0.28 1" />
+  </worldbody>
+</mujoco>

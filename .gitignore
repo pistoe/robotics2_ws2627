@@ -1,0 +1,13 @@
+build/
+install/
+log/
+logs/
+__pycache__/
+*.pyc
+*.oci.tar
+*.tar
+*.tar.gz
+.env
+.venv/
+.idea/
+.vscode/

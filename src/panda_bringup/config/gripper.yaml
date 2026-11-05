@@ -1,0 +1,10 @@
+/**:
+  ros__parameters:
+    mujoco_plugins:
+      panda_gripper:
+        type: panda_gripper_sim/FrankaHand
+        position_gain: 3000.0
+        velocity_gain: 12.0
+        default_speed: 0.05
+        move_force: 30.0
+        acceleration: 0.5

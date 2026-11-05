@@ -1,0 +1,13 @@
+.git
+workspace
+logs
+build
+install
+log
+**/__pycache__
+*.pyc
+*.tar
+*.tar.gz
+*.zip
+.env
+.venv

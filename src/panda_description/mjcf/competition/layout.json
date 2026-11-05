@@ -1,0 +1,86 @@
+{
+  "revision": "continuous-3",
+  "units": "m",
+  "surface_height": 0.0,
+  "object_area": {
+    "origin": [
+      0.25,
+      -0.2,
+      0.0
+    ],
+    "size": [
+      0.45,
+      0.4
+    ]
+  },
+  "bins": [
+    {
+      "position": [
+        -0.23,
+        -0.5,
+        0.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "position": [
+        -0.06,
+        -0.5,
+        0.0
+      ],
+      "yaw": 0.0
+    },
+    {
+      "position": [
+        0.11,
+        -0.5,
+        0.0
+      ],
+      "yaw": 0.0
+    }
+  ],
+  "carrier": {
+    "position": [
+      0.29,
+      0.32,
+      0.0
+    ],
+    "yaw": 0.0
+  },
+  "drawer": {
+    "position": [
+      0.43,
+      -0.34,
+      0.0
+    ],
+    "yaw": -1.5707963267948966
+  },
+  "contact": {
+    "sliding_friction": 0.8,
+    "torsional_friction": 0.005,
+    "rolling_friction": 0.0001
+  },
+  "drawer_joint": {
+    "stroke": 0.08,
+    "damping": 1.0,
+    "frictionloss": 0.5
+  },
+  "density_kg_m3": 550.0,
+  "mass_overrides_kg": {},
+  "carrier_size": [
+    0.24,
+    0.22
+  ],
+  "tower": {
+    "position": [
+      0.27,
+      -0.18,
+      0.0
+    ],
+    "yaw": 0.0,
+    "size": [
+      0.1,
+      0.1
+    ]
+  }
+}

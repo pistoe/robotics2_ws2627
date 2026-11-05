@@ -1,0 +1,90 @@
+FROM docker.io/library/ros:jazzy-ros-base@sha256:efbc8cb259b6346f1c8944ffd49d3fbffd647116ec05006df8b36444a13b7bdf AS dependencies
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ros-jazzy-mujoco-ros2-control=0.1.2-1noble.20261006.035710 \
+    ros-jazzy-mujoco-vendor=0.1.0-1noble.20260826.114141 \
+    ros-jazzy-moveit ros-jazzy-moveit-resources-panda-description \
+    ros-jazzy-ros2-controllers ros-jazzy-rviz2 ros-jazzy-xacro \
+    ros-jazzy-rmw-cyclonedds-cpp python3-colcon-common-extensions \
+    python3-pip python3-venv python3-pytest python3-numpy \
+    mesa-utils libgl1-mesa-dri libglx-mesa0 libegl-mesa0 \
+    libxcb-cursor0 libxkbcommon-x11-0 xauth git ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+RUN python3 -m venv --system-site-packages /opt/panda/venv \
+    && /opt/panda/venv/bin/pip install --no-cache-dir mujoco==3.12.0
+ENV PATH=/opt/panda/venv/bin:${PATH} \
+    RMW_IMPLEMENTATION=rmw_cyclonedds_cpp \
+    QT_X11_NO_MITSHM=1 \
+    QT_QPA_PLATFORM=xcb
+
+FROM dependencies AS interfaces
+RUN git init /tmp/driver \
+    && git -C /tmp/driver fetch --depth 1 https://github.com/lvjonok/pixi_panda_ros2.git 167960fbd64d52c7fa31eeb70babfe65f2416062 \
+    && git -C /tmp/driver checkout FETCH_HEAD \
+    && source /opt/ros/jazzy/setup.bash \
+    && colcon --log-base /tmp/interfaces-log build --base-paths /tmp/driver/src/franka_msgs \
+       --build-base /tmp/interfaces-build --install-base /opt/panda/interfaces --merge-install \
+       --cmake-args -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
+
+FROM dependencies AS mujoco_runtime
+COPY container/patches/mujoco-runtime.patch /tmp/mujoco-runtime.patch
+COPY container/patches/student-state.patch /tmp/student-state.patch
+RUN git init /tmp/mujoco-runtime \
+    && git -C /tmp/mujoco-runtime fetch --depth 1 https://github.com/ros-controls/mujoco_ros2_control.git 178b1c39e5010185116bc89b4e94cbb25b825f61 \
+    && git -C /tmp/mujoco-runtime checkout FETCH_HEAD \
+    && git -C /tmp/mujoco-runtime apply /tmp/mujoco-runtime.patch \
+    && git -C /tmp/mujoco-runtime apply /tmp/student-state.patch \
+    && source /opt/ros/jazzy/setup.bash \
+    && colcon --log-base /tmp/mujoco-runtime-log build \
+       --base-paths /tmp/mujoco-runtime/mujoco_ros2_control \
+       --build-base /tmp/mujoco-runtime-build --install-base /opt/panda/mujoco_runtime --merge-install \
+       --cmake-args -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF \
+       -DMUJOCO_DEP_VERSION_lodepng=7735153f542e54e94285dc5c1e7f196b02e15385 \
+    && cp /tmp/mujoco-runtime-build/mujoco_ros2_control/_deps/lodepng-src/LICENSE \
+       /opt/panda/mujoco_runtime/share/mujoco_ros2_control/LODEPNG_LICENSE
+
+FROM dependencies AS student_builder
+COPY --from=interfaces /opt/panda/interfaces /opt/panda/interfaces
+COPY --from=mujoco_runtime /opt/panda/mujoco_runtime /opt/panda/mujoco_runtime
+WORKDIR /opt/panda/ws
+COPY src/ src/
+RUN source /opt/ros/jazzy/setup.bash \
+    && source /opt/panda/mujoco_runtime/setup.bash \
+    && source /opt/panda/interfaces/setup.bash \
+    && colcon build --merge-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF
+
+FROM dependencies AS runtime
+LABEL org.opencontainers.image.title="Robotics 2 Panda student simulation" \
+      org.opencontainers.image.version="2026.11" \
+      org.opencontainers.image.licenses="Apache-2.0 AND BSD-3-Clause" \
+      org.opencontainers.image.description="Ubuntu 24.04 / ROS 2 Jazzy / MuJoCo; three student environments"
+COPY --from=interfaces /opt/panda/interfaces /opt/panda/interfaces
+COPY --from=mujoco_runtime /opt/panda/mujoco_runtime /opt/panda/mujoco_runtime
+COPY --from=student_builder /opt/panda/ws/install /opt/panda/ws/install
+COPY container/entrypoint.sh /opt/panda/entrypoint.sh
+COPY LICENSE NOTICE /opt/panda/licenses/
+COPY versions.lock.yaml /opt/panda/versions.lock.yaml
+COPY STUDENT_RELEASE.json /opt/panda/STUDENT_RELEASE.json
+COPY README.md CHALLENGE.md /opt/panda/docs/
+COPY assets/ /opt/panda/docs/assets/
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-opencv ros-jazzy-cv-bridge ros-jazzy-tf2-geometry-msgs \
+    && rm -rf /var/lib/apt/lists/*
+RUN python - <<'PY'
+import subprocess
+import yaml
+import mujoco
+with open('/opt/panda/versions.lock.yaml') as source:
+    pinned = yaml.safe_load(source)['packages']
+for name, expected in pinned.items():
+    if name.startswith(('ros-', 'libgl')):
+        actual = subprocess.check_output(['dpkg-query', '-W', '-f=${Version}', name], text=True)
+        assert actual == expected, f'{name}: expected {expected}, installed {actual}'
+assert mujoco.__version__ == pinned['python-mujoco']
+PY
+RUN dpkg-query -W > /opt/panda/packages.lock && install -d -m 1777 /data
+WORKDIR /workspaces/student
+ENTRYPOINT ["/opt/panda/entrypoint.sh"]
+CMD ["ros2", "launch", "panda_bringup", "simulation.launch.py"]

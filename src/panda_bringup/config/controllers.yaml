@@ -1,0 +1,41 @@
+/**/controller_manager:
+  ros__parameters:
+    update_rate: 1000
+    enforce_command_limits: true
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    panda_arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+/**/joint_state_broadcaster:
+  ros__parameters:
+    update_rate: 100
+    joints: [panda_joint1, panda_joint2, panda_joint3, panda_joint4, panda_joint5, panda_joint6, panda_joint7]
+    interfaces: [position, velocity, effort]
+
+/**/panda_arm_controller:
+  ros__parameters:
+    joints: [panda_joint1, panda_joint2, panda_joint3, panda_joint4, panda_joint5, panda_joint6, panda_joint7]
+    command_interfaces: [effort]
+    state_interfaces: [position, velocity]
+    allow_partial_joints_goal: false
+    allow_nonzero_velocity_at_trajectory_end: false
+    action_monitor_rate: 20.0
+    constraints:
+      goal_time: 3.0
+      stopped_velocity_tolerance: 0.01
+      panda_joint1: {trajectory: 0.1, goal: 0.01}
+      panda_joint2: {trajectory: 0.1, goal: 0.01}
+      panda_joint3: {trajectory: 0.1, goal: 0.01}
+      panda_joint4: {trajectory: 0.1, goal: 0.01}
+      panda_joint5: {trajectory: 0.1, goal: 0.01}
+      panda_joint6: {trajectory: 0.1, goal: 0.01}
+      panda_joint7: {trajectory: 0.1, goal: 0.01}
+    gains:
+      panda_joint1: {p: 600.0, i: 0.0, d: 45.0, antiwindup_strategy: none, u_clamp_min: -87.0, u_clamp_max: 87.0}
+      panda_joint2: {p: 600.0, i: 0.0, d: 45.0, antiwindup_strategy: none, u_clamp_min: -87.0, u_clamp_max: 87.0}
+      panda_joint3: {p: 500.0, i: 0.0, d: 35.0, antiwindup_strategy: none, u_clamp_min: -87.0, u_clamp_max: 87.0}
+      panda_joint4: {p: 500.0, i: 0.0, d: 35.0, antiwindup_strategy: none, u_clamp_min: -87.0, u_clamp_max: 87.0}
+      panda_joint5: {p: 200.0, i: 0.0, d: 12.0, antiwindup_strategy: none, u_clamp_min: -12.0, u_clamp_max: 12.0}
+      panda_joint6: {p: 150.0, i: 0.0, d: 10.0, antiwindup_strategy: none, u_clamp_min: -12.0, u_clamp_max: 12.0}
+      panda_joint7: {p: 100.0, i: 0.0, d: 8.0, antiwindup_strategy: none, u_clamp_min: -12.0, u_clamp_max: 12.0}

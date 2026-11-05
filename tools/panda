@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+import argparse
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+IMAGE = os.environ.get("PANDA_IMAGE", "localhost/robotics2-panda:student-jazzy")
+NAME = os.environ.get("PANDA_CONTAINER", f"robotics2-student-{os.getuid()}")
+
+
+def call(command, **kwargs):
+    return subprocess.run(command, check=True, **kwargs)
+
+
+def run(command, gui, render=False):
+    if subprocess.run(["podman", "image", "exists", IMAGE]).returncode:
+        raise RuntimeError("Image missing. Run ./tools/panda build or load the provided image archive.")
+    workspace, logs = ROOT / "workspace", ROOT / "logs"
+    (workspace / "src").mkdir(parents=True, exist_ok=True)
+    logs.mkdir(exist_ok=True)
+    args = ["podman", "run", "--rm", "--init", "--stop-signal", "SIGINT", "--name", NAME,
+            "--userns=keep-id", "--user", f"{os.getuid()}:{os.getgid()}",
+            "--env", "HOME=/tmp/student-home", "--env", "ROS_LOG_DIR=/data/log",
+            "--env", f"ROS_DOMAIN_ID={os.environ.get('ROS_DOMAIN_ID', '42')}",
+            "--volume", f"{workspace}:/workspaces/student:z", "--volume", f"{logs}:/data/log:z"]
+    if sys.stdin.isatty():
+        args += ["-it"]
+    with tempfile.TemporaryDirectory(prefix="robotics2-display-") as temporary:
+        if gui:
+            display = os.environ.get("DISPLAY")
+            if not display or not Path("/tmp/.X11-unix").exists():
+                raise RuntimeError("No X11/XWayland display; use headless:=true use_rviz:=false or a desktop terminal.")
+            records = call(["xauth", "nlist", display], capture_output=True, text=True).stdout
+            if not records.strip():
+                raise RuntimeError("No Xauthority entry; check DISPLAY and XAUTHORITY in your desktop terminal.")
+            authority = Path(temporary) / "Xauthority"
+            authority.touch(mode=0o600)
+            records = "\n".join("ffff" + line[4:] for line in records.splitlines()) + "\n"
+            call(["xauth", "-f", str(authority), "nmerge", "-"], input=records, text=True)
+            args += ["--env", f"DISPLAY={display}", "--env", "XAUTHORITY=/tmp/student.Xauthority",
+                     "--volume", "/tmp/.X11-unix:/tmp/.X11-unix:ro",
+                     "--volume", f"{authority}:/tmp/student.Xauthority:ro"]
+        if gui or render:
+            if Path("/sys/fs/selinux/enforce").exists():
+                args += ["--security-opt", "label=disable"]
+            if Path("/dev/dri").exists():
+                args += ["--device", "/dev/dri", "--group-add", "keep-groups"]
+            if os.environ.get("PANDA_SOFTWARE_RENDERING") == "1":
+                args += ["--env", "LIBGL_ALWAYS_SOFTWARE=1", "--env", "EGL_PLATFORM=surfaceless"]
+        call([*args, IMAGE, *command])
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Robotics 2 student simulation")
+    parser.add_argument("command", choices=["build", "load", "sim", "competition", "competition-randomized",
+                                             "exec", "shell", "stop", "doctor"])
+    parser.add_argument("args", nargs=argparse.REMAINDER)
+    options = parser.parse_args()
+    if not shutil.which("podman"):
+        raise RuntimeError("Podman is not installed")
+    if options.command == "build":
+        call(["podman", "build", "--format", "docker", "--target", "runtime", "-t", IMAGE,
+              "-f", str(ROOT / "container/Containerfile"), str(ROOT), *options.args])
+    elif options.command == "load":
+        if len(options.args) != 1:
+            parser.error("load requires the path to an image archive")
+        call(["podman", "load", "--input", str(Path(options.args[0]).expanduser().resolve(strict=True))])
+    elif options.command in {"sim", "competition", "competition-randomized"}:
+        gui = "headless:=true" not in options.args or "use_rviz:=false" not in options.args
+        launch = {"sim": "simulation.launch.py", "competition": "competition.launch.py",
+                  "competition-randomized": "competition_randomized.launch.py"}[options.command]
+        cameras = options.command != "sim" and "camera:=false" not in options.args and not {
+            "external_camera:=false", "wrist_camera:=false"}.issubset(options.args)
+        run(["ros2", "launch", "panda_bringup", launch, *options.args], gui, cameras)
+    elif options.command == "exec":
+        if not options.args:
+            parser.error("exec requires a command")
+        call(["podman", "exec", *(["-it"] if sys.stdin.isatty() else []), NAME,
+              "/opt/panda/entrypoint.sh", *options.args])
+    elif options.command == "shell":
+        run(["bash"], "--headless" not in options.args)
+    elif options.command == "stop":
+        call(["podman", "stop", "--time", "20", NAME])
+    else:
+        call(["podman", "info", "--format", "{{.Host.OCIRuntime.Name}} / {{.Host.Arch}}"])
+        call(["podman", "--version"])
+        print(f"Image: {IMAGE}\nContainer: {NAME}\nDISPLAY: {os.environ.get('DISPLAY', '(unset)')}")
+        if shutil.which("glxinfo") and os.environ.get("DISPLAY"):
+            call(["glxinfo", "-B"])
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        sys.exit(130)
+    except (subprocess.CalledProcessError, RuntimeError, OSError) as error:
+        print(f"panda: {error}", file=sys.stderr)
+        sys.exit(1)

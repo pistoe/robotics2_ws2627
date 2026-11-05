@@ -1,0 +1,32 @@
+container:
+  base: docker.io/library/ros:jazzy-ros-base
+  digest: sha256:efbc8cb259b6346f1c8944ffd49d3fbffd647116ec05006df8b36444a13b7bdf
+  os: Ubuntu 24.04
+  ros: jazzy
+packages:
+  ros-jazzy-mujoco-ros2-control: 0.1.2-1noble.20261006.035710
+  ros-jazzy-mujoco-vendor: 0.1.0-1noble.20260826.114141
+  ros-jazzy-controller-manager: 4.48.1-1noble.20261006.035021
+  ros-jazzy-joint-trajectory-controller: 4.42.1-1noble.20260924.190511
+  ros-jazzy-moveit-ros-move-group: 2.12.4-1noble.20260915.202214
+  ros-jazzy-moveit-resources-panda-description: 3.1.0-1noble.20260225.235702
+  ros-jazzy-rviz2: 14.1.24-1noble.20260915.204213
+  ros-jazzy-rviz-common: 14.1.24-1noble.20260915.181303
+  ros-jazzy-rmw-cyclonedds-cpp: 2.2.4-1noble.20260911.095700
+  ros-jazzy-cyclonedds: 0.10.5-1noble.20260225.142613
+  libgl1-mesa-dri: 25.2.8-0ubuntu0.24.04.4
+  mujoco: 3.12.0
+  python-mujoco: 3.12.0
+sources:
+  mujoco_ros2_control: 178b1c39e5010185116bc89b4e94cbb25b825f61
+  lodepng: 7735153f542e54e94285dc5c1e7f196b02e15385
+  rviz_image_display_reference: e2e1a1562ae5a99975ec4052856064becec9da0c
+  mujoco_menagerie: cda5236f98383f6fbaa4820c6b18dba892cd087f
+  panda_jazzy_driver: 167960fbd64d52c7fa31eeb70babfe65f2416062
+  panda_srdf: e1657c128ea61621777a041e3783c9c7c93db4ca
+  libfranka: f3b8d775a9c847cab32684c8a316f67867761674
+notes:
+  - The MuJoCo 0.1.2 source overlay applies container/patches/mujoco-runtime.patch for startup and reset coordination.
+  - franka_msgs and franka_gripper use the pinned panda_jazzy_driver source commit.
+  - Full resolved Debian package versions are recorded in /opt/panda/packages.lock inside each image.
+  - Registry package retention is external; preserve the built image for long-term reproducibility.

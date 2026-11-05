@@ -1,0 +1,5 @@
+<library path="panda_gripper_sim">
+  <class name="panda_gripper_sim/FrankaHand" type="panda_gripper_sim::FrankaHand" base_class_type="mujoco_ros2_control_plugins::MuJoCoROS2ControlPluginBase">
+    <description>Force-limited parallel fingers with the Panda gripper action contract.</description>
+  </class>
+</library>

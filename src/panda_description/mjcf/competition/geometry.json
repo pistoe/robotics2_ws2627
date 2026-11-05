@@ -1,0 +1,2077 @@
+{
+  "cad_revision": "continuous-3",
+  "units": "m",
+  "density_assumption_kg_m3": 550.0,
+  "drawer_stroke_m": 0.08,
+  "collision_simplifications": "Fastener bores and shallow engraved/painted markings are filled; functional openings, peg chamfers and guide travel slot are preserved.",
+  "parts": {
+    "O1_cube": {
+      "size_m": [
+        0.04,
+        0.04,
+        0.04
+      ],
+      "source_stl": "stl/O1_cube.stl",
+      "source_sha256": "603ee115bb25fa4202aef25504e6f034ceeaa118a77e75a3ef6625eeef8eaefe",
+      "visual": "visual/O1_cube.obj",
+      "collision": [
+        "collision/O1_cube_000.obj"
+      ],
+      "volume_m3": 6.394066666666666e-05,
+      "mass_kg": 0.03516736666666666,
+      "center_of_mass_m": [
+        0.020000000000000004,
+        0.020000000000000004,
+        0.020000000000000004
+      ],
+      "inertia_kg_m2": [
+        [
+          9.366713610833338e-06,
+          5.459392042849983e-21,
+          5.459392042849983e-21
+        ],
+        [
+          5.459392042849983e-21,
+          9.366713610833338e-06,
+          5.459392042849983e-21
+        ],
+        [
+          5.459392042849983e-21,
+          5.459392042849983e-21,
+          9.366713610833338e-06
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0
+      ],
+      "workpiece_symmetric_difference_mm3": 0.0
+    },
+    "O2_cuboid": {
+      "size_m": [
+        0.05,
+        0.03,
+        0.04
+      ],
+      "source_stl": "stl/O2_cuboid.stl",
+      "source_sha256": "ff68f4c2679370fad40ffc408ab37577aaa055f4429c3c51bc2343d055867e6f",
+      "visual": "visual/O2_cuboid.obj",
+      "collision": [
+        "collision/O2_cuboid_000.obj"
+      ],
+      "volume_m3": 5.9940666666666674e-05,
+      "mass_kg": 0.03296736666666667,
+      "center_of_mass_m": [
+        0.025000000000000005,
+        0.015000000000000001,
+        0.019999999999999997
+      ],
+      "inertia_kg_m2": [
+        [
+          6.85903948583334e-06,
+          1.819797347616661e-21,
+          3.639594695233322e-21
+        ],
+        [
+          1.819797347616661e-21,
+          1.125051356916667e-05,
+          -1.819797347616661e-21
+        ],
+        [
+          3.639594695233322e-21,
+          -1.819797347616661e-21,
+          9.329506110833335e-06
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        7.275957614183426e-12
+      ],
+      "workpiece_symmetric_difference_mm3": 0.0
+    },
+    "O3_cylinder": {
+      "size_m": [
+        0.036000000000000004,
+        0.036000000000000004,
+        0.04
+      ],
+      "source_stl": "stl/O3_cylinder.stl",
+      "source_sha256": "55ba604ef2596e570173291706db3759fb8635d035d99ed4f48ae352e31e1ee9",
+      "visual": "visual/O3_cylinder.obj",
+      "collision": [
+        "collision/O3_cylinder_000.obj"
+      ],
+      "volume_m3": 4.067069123689844e-05,
+      "mass_kg": 0.02236888018029414,
+      "center_of_mass_m": [
+        1.3671022077530963e-10,
+        1.367102201787138e-10,
+        0.02
+      ],
+      "inertia_kg_m2": [
+        [
+          4.788463291625027e-06,
+          -5.212135079153868e-22,
+          -7.168612295089317e-18
+        ],
+        [
+          -5.212135079153868e-22,
+          4.788463291625027e-06,
+          7.16890967121192e-18
+        ],
+        [
+          -7.168612295089317e-18,
+          7.16890967121192e-18,
+          3.6199010481669407e-06
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0008758105177548714
+      ],
+      "workpiece_symmetric_difference_mm3": 0.002405243700038546
+    },
+    "O4_l_piece": {
+      "size_m": [
+        0.06,
+        0.05,
+        0.03
+      ],
+      "source_stl": "stl/O4_l_piece.stl",
+      "source_sha256": "e17071628d886a1221fb53e4da141013fe541bce6eeb430f73c46de0c0a90c48",
+      "visual": "visual/O4_l_piece.obj",
+      "collision": [
+        "collision/O4_l_piece_000.obj",
+        "collision/O4_l_piece_001.obj"
+      ],
+      "volume_m3": 5.800699999864399e-05,
+      "mass_kg": 0.03190384999925419,
+      "center_of_mass_m": [
+        0.02395203937339526,
+        0.018951723319748526,
+        0.014999999999654502
+      ],
+      "inertia_kg_m2": [
+        [
+          8.247845425234311e-06,
+          3.286047107976314e-06,
+          -1.290072537698927e-16
+        ],
+        [
+          3.286047107976314e-06,
+          1.18134705572262e-05,
+          -2.0580816123135865e-16
+        ],
+        [
+          -1.290072537698927e-16,
+          -2.0580816123135865e-16,
+          1.528439367466135e-05
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        0.0
+      ],
+      "workpiece_symmetric_difference_mm3": 1.3560056668637799e-06
+    },
+    "O5_round_peg": {
+      "size_m": [
+        0.032,
+        0.032,
+        0.05
+      ],
+      "source_stl": "stl/O5_round_peg.stl",
+      "source_sha256": "13957fa9930bc2254ca40a54b3bab855d9fcff4459e16266ecbdbdbbd46e5c6d",
+      "visual": "visual/O5_round_peg.obj",
+      "collision": [
+        "collision/O5_round_peg_000.obj",
+        "collision/O5_round_peg_001.obj"
+      ],
+      "volume_m3": 3.69347668576903e-05,
+      "mass_kg": 0.020314121771729664,
+      "center_of_mass_m": [
+        0.016000000002461778,
+        0.016000000002460404,
+        0.019232790642647747
+      ],
+      "inertia_kg_m2": [
+        [
+          4.682648173379284e-06,
+          2.7296960214249913e-21,
+          -1.0377039514301223e-15
+        ],
+        [
+          2.7296960214249913e-21,
+          4.682648173379284e-06,
+          -1.0368568357648068e-15
+        ],
+        [
+          -1.0377039514301223e-15,
+          -1.0368568357648068e-15,
+          3.04534590481102e-06
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        4.9073399168264586e-05
+      ],
+      "workpiece_symmetric_difference_mm3": 0.00015128929623617668
+    },
+    "O6_d_peg": {
+      "size_m": [
+        0.032,
+        0.032,
+        0.05
+      ],
+      "source_stl": "stl/O6_d_peg.stl",
+      "source_sha256": "42957e054c4aa013d94271009323e409d196325de458ee189c7f744ccffd0b92",
+      "visual": "visual/O6_d_peg.obj",
+      "collision": [
+        "collision/O6_d_peg_000.obj",
+        "collision/O6_d_peg_001.obj"
+      ],
+      "volume_m3": 3.604172299646282e-05,
+      "mass_kg": 0.01982294764805455,
+      "center_of_mass_m": [
+        0.015811326466898375,
+        0.015999993496590623,
+        0.01871843854629967
+      ],
+      "inertia_kg_m2": [
+        [
+          4.442765637791977e-06,
+          -9.942649337931757e-15,
+          7.948688956157213e-08
+        ],
+        [
+          -9.942649337931757e-15,
+          4.419674333851603e-06,
+          3.978398428146037e-12
+        ],
+        [
+          7.948688956157213e-08,
+          3.978398428146037e-12,
+          3.008971836318993e-06
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        0.027984682475107547
+      ],
+      "workpiece_symmetric_difference_mm3": 0.00016127150015573675
+    },
+    "O7_product_base": {
+      "size_m": [
+        0.14,
+        0.07,
+        0.039
+      ],
+      "source_stl": "stl/O7_product_base.stl",
+      "source_sha256": "5bcb9a4f87541d3c795e41b7142c6d96782f64ae41a7bcb87c61dcff010b62f4",
+      "visual": "visual/O7_product_base.obj",
+      "collision": [
+        "collision/O7_product_base_000.obj",
+        "collision/O7_product_base_001.obj",
+        "collision/O7_product_base_002.obj",
+        "collision/O7_product_base_003.obj",
+        "collision/O7_product_base_004.obj",
+        "collision/O7_product_base_005.obj",
+        "collision/O7_product_base_006.obj",
+        "collision/O7_product_base_007.obj",
+        "collision/O7_product_base_008.obj",
+        "collision/O7_product_base_009.obj",
+        "collision/O7_product_base_010.obj",
+        "collision/O7_product_base_011.obj",
+        "collision/O7_product_base_012.obj",
+        "collision/O7_product_base_013.obj",
+        "collision/O7_product_base_014.obj",
+        "collision/O7_product_base_015.obj",
+        "collision/O7_product_base_016.obj",
+        "collision/O7_product_base_017.obj",
+        "collision/O7_product_base_018.obj",
+        "collision/O7_product_base_019.obj",
+        "collision/O7_product_base_020.obj",
+        "collision/O7_product_base_021.obj",
+        "collision/O7_product_base_022.obj",
+        "collision/O7_product_base_023.obj",
+        "collision/O7_product_base_024.obj",
+        "collision/O7_product_base_025.obj",
+        "collision/O7_product_base_026.obj",
+        "collision/O7_product_base_027.obj",
+        "collision/O7_product_base_028.obj",
+        "collision/O7_product_base_029.obj",
+        "collision/O7_product_base_030.obj",
+        "collision/O7_product_base_031.obj",
+        "collision/O7_product_base_032.obj",
+        "collision/O7_product_base_033.obj",
+        "collision/O7_product_base_034.obj",
+        "collision/O7_product_base_035.obj",
+        "collision/O7_product_base_036.obj",
+        "collision/O7_product_base_037.obj",
+        "collision/O7_product_base_038.obj",
+        "collision/O7_product_base_039.obj",
+        "collision/O7_product_base_040.obj",
+        "collision/O7_product_base_041.obj",
+        "collision/O7_product_base_042.obj",
+        "collision/O7_product_base_043.obj",
+        "collision/O7_product_base_044.obj",
+        "collision/O7_product_base_045.obj",
+        "collision/O7_product_base_046.obj",
+        "collision/O7_product_base_047.obj",
+        "collision/O7_product_base_048.obj",
+        "collision/O7_product_base_049.obj",
+        "collision/O7_product_base_050.obj",
+        "collision/O7_product_base_051.obj",
+        "collision/O7_product_base_052.obj",
+        "collision/O7_product_base_053.obj",
+        "collision/O7_product_base_054.obj",
+        "collision/O7_product_base_055.obj",
+        "collision/O7_product_base_056.obj",
+        "collision/O7_product_base_057.obj",
+        "collision/O7_product_base_058.obj",
+        "collision/O7_product_base_059.obj",
+        "collision/O7_product_base_060.obj",
+        "collision/O7_product_base_061.obj",
+        "collision/O7_product_base_062.obj",
+        "collision/O7_product_base_063.obj",
+        "collision/O7_product_base_064.obj",
+        "collision/O7_product_base_065.obj",
+        "collision/O7_product_base_066.obj",
+        "collision/O7_product_base_067.obj",
+        "collision/O7_product_base_068.obj",
+        "collision/O7_product_base_069.obj",
+        "collision/O7_product_base_070.obj",
+        "collision/O7_product_base_071.obj",
+        "collision/O7_product_base_072.obj",
+        "collision/O7_product_base_073.obj",
+        "collision/O7_product_base_074.obj",
+        "collision/O7_product_base_075.obj",
+        "collision/O7_product_base_076.obj",
+        "collision/O7_product_base_077.obj",
+        "collision/O7_product_base_078.obj",
+        "collision/O7_product_base_079.obj",
+        "collision/O7_product_base_080.obj",
+        "collision/O7_product_base_081.obj",
+        "collision/O7_product_base_082.obj",
+        "collision/O7_product_base_083.obj",
+        "collision/O7_product_base_084.obj",
+        "collision/O7_product_base_085.obj",
+        "collision/O7_product_base_086.obj",
+        "collision/O7_product_base_087.obj",
+        "collision/O7_product_base_088.obj",
+        "collision/O7_product_base_089.obj",
+        "collision/O7_product_base_090.obj",
+        "collision/O7_product_base_091.obj",
+        "collision/O7_product_base_092.obj",
+        "collision/O7_product_base_093.obj",
+        "collision/O7_product_base_094.obj",
+        "collision/O7_product_base_095.obj",
+        "collision/O7_product_base_096.obj",
+        "collision/O7_product_base_097.obj",
+        "collision/O7_product_base_098.obj",
+        "collision/O7_product_base_099.obj",
+        "collision/O7_product_base_100.obj",
+        "collision/O7_product_base_101.obj",
+        "collision/O7_product_base_102.obj",
+        "collision/O7_product_base_103.obj",
+        "collision/O7_product_base_104.obj",
+        "collision/O7_product_base_105.obj",
+        "collision/O7_product_base_106.obj",
+        "collision/O7_product_base_107.obj",
+        "collision/O7_product_base_108.obj",
+        "collision/O7_product_base_109.obj",
+        "collision/O7_product_base_110.obj",
+        "collision/O7_product_base_111.obj",
+        "collision/O7_product_base_112.obj",
+        "collision/O7_product_base_113.obj",
+        "collision/O7_product_base_114.obj",
+        "collision/O7_product_base_115.obj",
+        "collision/O7_product_base_116.obj",
+        "collision/O7_product_base_117.obj",
+        "collision/O7_product_base_118.obj",
+        "collision/O7_product_base_119.obj",
+        "collision/O7_product_base_120.obj",
+        "collision/O7_product_base_121.obj",
+        "collision/O7_product_base_122.obj",
+        "collision/O7_product_base_123.obj",
+        "collision/O7_product_base_124.obj",
+        "collision/O7_product_base_125.obj",
+        "collision/O7_product_base_126.obj",
+        "collision/O7_product_base_127.obj",
+        "collision/O7_product_base_128.obj",
+        "collision/O7_product_base_129.obj",
+        "collision/O7_product_base_130.obj",
+        "collision/O7_product_base_131.obj",
+        "collision/O7_product_base_132.obj",
+        "collision/O7_product_base_133.obj",
+        "collision/O7_product_base_134.obj",
+        "collision/O7_product_base_135.obj",
+        "collision/O7_product_base_136.obj"
+      ],
+      "volume_m3": 0.00014872433802685153,
+      "mass_kg": 0.08179838591476835,
+      "center_of_mass_m": [
+        0.07069601540608919,
+        0.03525755028528588,
+        0.010433949198827862
+      ],
+      "inertia_kg_m2": [
+        [
+          3.511440826440424e-05,
+          -2.381433224875795e-07,
+          -6.335612947429281e-07
+        ],
+        [
+          -2.381433224875795e-07,
+          0.00017048352373863558,
+          -1.3914658230443207e-09
+        ],
+        [
+          -6.335612947429281e-07,
+          -1.3914658230443207e-09,
+          0.00019090434720498244
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        6.5645308495732024e-06,
+        0.0006501660600406467,
+        7.580092187708942e-06,
+        1.1992851796094328e-06,
+        1.2412648629833711e-05,
+        0.0,
+        3.252794226682454e-05,
+        0.00013317620684460962,
+        0.00011386430185211793,
+        0.00022392595610654098,
+        7.602390238048429e-05,
+        0.00016988118045446754,
+        0.00025563182475707436,
+        0.00016366414791946227,
+        0.00027452950610040716,
+        0.00024473833644833576,
+        7.87782983309171e-05,
+        8.78754536586257e-05,
+        2.0745189004856002e-05,
+        9.095502446143655e-05,
+        2.5500290661284453e-05,
+        2.072185168344731e-06,
+        2.5410121338609315e-05,
+        1.897804347095189e-05,
+        2.6588398611693265e-05,
+        1.4115378746737406e-05,
+        9.430585862446605e-06,
+        7.054707137399419e-05,
+        0.00016656700427120086,
+        0.0001782221926305283,
+        0.00039248606447017664,
+        0.0001817496624312298,
+        0.00011067178354551288,
+        5.661143023871773e-05,
+        0.0002075974263959779,
+        0.00013446106578385297,
+        0.00012382008276290435,
+        3.376571879698531e-05,
+        6.804556139172746e-05,
+        2.8833288723717487e-05,
+        0.0001039129271305228,
+        2.2193899809508366e-05,
+        0.00011202443900515391,
+        6.8718978809556575e-06,
+        3.167151004390689e-05,
+        0.00017174861903868077,
+        3.8938681825584354e-05,
+        7.276613877138516e-05,
+        4.573178841837944e-05,
+        5.5797932304813e-05,
+        1.627882127763769e-05,
+        8.40590192296986e-06,
+        5.399274758133288e-05,
+        1.6770640741015086e-05,
+        4.2134642711744164e-05,
+        2.225775858732959e-05,
+        0.00010076116879531583,
+        3.120537687095748e-05,
+        7.90625327908856e-05,
+        1.5080862084460023e-05,
+        5.4566002631872834e-05,
+        6.74857507760862e-05,
+        1.7614127898468723e-05,
+        8.065902403586733e-05,
+        6.129550672540063e-05,
+        0.00014155586362107897,
+        3.5624989436655596e-05,
+        0.00010405702838056641,
+        2.7360651642993616e-05,
+        6.672868866530735e-05,
+        0.0,
+        1.6237002000707434e-06,
+        0.00025729459710532865,
+        0.00030049751856608964,
+        0.00012276555500534414,
+        0.0003152506499759511,
+        0.0002200679666088945,
+        0.0005282659784597854,
+        0.0001510015518988439,
+        0.0004756554753839737,
+        0.0006548272507416186,
+        0.000720655270839643,
+        0.0008298238245458833,
+        0.0001905619184014995,
+        9.399405990961895e-05,
+        0.0001977541985525022,
+        1.81200710471785e-05,
+        1.2464931415934188e-05,
+        0.00029742206154992346,
+        0.00015103308999186993,
+        0.00044563581639067706,
+        0.00013635566577363534,
+        0.0001377845687215995,
+        0.00014391844587180458,
+        9.739263185792879e-05,
+        3.603507195748534e-05,
+        0.0001862909246028721,
+        0.0003248040551966369,
+        2.3157770755233287e-05,
+        8.111765492913037e-05,
+        0.00013768112401635335,
+        0.00013839113063340847,
+        7.54945543235408e-06,
+        4.248187872235576e-05,
+        5.025059687113753e-05,
+        9.48009765977531e-05,
+        0.00011421182776416572,
+        3.099403528494804e-05,
+        0.00023535773871685706,
+        4.4142635999833146e-05,
+        7.542580698327583e-05,
+        0.00025228847130165377,
+        0.00013369448498679048,
+        7.010323272993446e-05,
+        8.998831961548603e-05,
+        0.00044779925892157735,
+        0.00024282700479716368,
+        0.000193446538361286,
+        2.784348214390775e-05,
+        2.1222297277745383e-05,
+        0.0002455123236870804,
+        8.52797377888237e-05,
+        0.00022854677325767625,
+        0.0008982913012971494,
+        0.0008627353936674353,
+        0.00048622103338402667,
+        0.0007294971464943956,
+        0.000278010893453029,
+        0.0003538296186889056,
+        1.782467828093104e-05,
+        0.00040470127117941956,
+        5.7852771419675264e-05,
+        8.641838761036524e-05,
+        0.00015764643342208728,
+        3.338395728746946e-05,
+        9.094947017729282e-13
+      ],
+      "workpiece_symmetric_difference_mm3": 0.0017317222422387143
+    },
+    "O8_product_cover": {
+      "size_m": [
+        0.14,
+        0.07,
+        0.018000000000000002
+      ],
+      "source_stl": "stl/O8_product_cover.stl",
+      "source_sha256": "7380f61fdb6ba71243e800fecd7e21290870cd5b0aeaab4dffc0be733de6df17",
+      "visual": "visual/O8_product_cover.obj",
+      "collision": [
+        "collision/O8_product_cover_000.obj",
+        "collision/O8_product_cover_001.obj",
+        "collision/O8_product_cover_002.obj",
+        "collision/O8_product_cover_003.obj",
+        "collision/O8_product_cover_004.obj",
+        "collision/O8_product_cover_005.obj",
+        "collision/O8_product_cover_006.obj",
+        "collision/O8_product_cover_007.obj",
+        "collision/O8_product_cover_008.obj",
+        "collision/O8_product_cover_009.obj",
+        "collision/O8_product_cover_010.obj",
+        "collision/O8_product_cover_011.obj",
+        "collision/O8_product_cover_012.obj",
+        "collision/O8_product_cover_013.obj",
+        "collision/O8_product_cover_014.obj",
+        "collision/O8_product_cover_015.obj",
+        "collision/O8_product_cover_016.obj",
+        "collision/O8_product_cover_017.obj",
+        "collision/O8_product_cover_018.obj",
+        "collision/O8_product_cover_019.obj",
+        "collision/O8_product_cover_020.obj",
+        "collision/O8_product_cover_021.obj",
+        "collision/O8_product_cover_022.obj",
+        "collision/O8_product_cover_023.obj",
+        "collision/O8_product_cover_024.obj",
+        "collision/O8_product_cover_025.obj",
+        "collision/O8_product_cover_026.obj",
+        "collision/O8_product_cover_027.obj",
+        "collision/O8_product_cover_028.obj",
+        "collision/O8_product_cover_029.obj",
+        "collision/O8_product_cover_030.obj",
+        "collision/O8_product_cover_031.obj",
+        "collision/O8_product_cover_032.obj",
+        "collision/O8_product_cover_033.obj",
+        "collision/O8_product_cover_034.obj",
+        "collision/O8_product_cover_035.obj",
+        "collision/O8_product_cover_036.obj",
+        "collision/O8_product_cover_037.obj",
+        "collision/O8_product_cover_038.obj",
+        "collision/O8_product_cover_039.obj",
+        "collision/O8_product_cover_040.obj",
+        "collision/O8_product_cover_041.obj",
+        "collision/O8_product_cover_042.obj",
+        "collision/O8_product_cover_043.obj",
+        "collision/O8_product_cover_044.obj",
+        "collision/O8_product_cover_045.obj",
+        "collision/O8_product_cover_046.obj",
+        "collision/O8_product_cover_047.obj",
+        "collision/O8_product_cover_048.obj",
+        "collision/O8_product_cover_049.obj",
+        "collision/O8_product_cover_050.obj",
+        "collision/O8_product_cover_051.obj",
+        "collision/O8_product_cover_052.obj",
+        "collision/O8_product_cover_053.obj",
+        "collision/O8_product_cover_054.obj",
+        "collision/O8_product_cover_055.obj",
+        "collision/O8_product_cover_056.obj",
+        "collision/O8_product_cover_057.obj",
+        "collision/O8_product_cover_058.obj",
+        "collision/O8_product_cover_059.obj",
+        "collision/O8_product_cover_060.obj",
+        "collision/O8_product_cover_061.obj",
+        "collision/O8_product_cover_062.obj",
+        "collision/O8_product_cover_063.obj",
+        "collision/O8_product_cover_064.obj",
+        "collision/O8_product_cover_065.obj",
+        "collision/O8_product_cover_066.obj",
+        "collision/O8_product_cover_067.obj",
+        "collision/O8_product_cover_068.obj",
+        "collision/O8_product_cover_069.obj",
+        "collision/O8_product_cover_070.obj",
+        "collision/O8_product_cover_071.obj",
+        "collision/O8_product_cover_072.obj",
+        "collision/O8_product_cover_073.obj",
+        "collision/O8_product_cover_074.obj",
+        "collision/O8_product_cover_075.obj",
+        "collision/O8_product_cover_076.obj",
+        "collision/O8_product_cover_077.obj",
+        "collision/O8_product_cover_078.obj",
+        "collision/O8_product_cover_079.obj",
+        "collision/O8_product_cover_080.obj",
+        "collision/O8_product_cover_081.obj",
+        "collision/O8_product_cover_082.obj",
+        "collision/O8_product_cover_083.obj",
+        "collision/O8_product_cover_084.obj",
+        "collision/O8_product_cover_085.obj",
+        "collision/O8_product_cover_086.obj",
+        "collision/O8_product_cover_087.obj",
+        "collision/O8_product_cover_088.obj",
+        "collision/O8_product_cover_089.obj",
+        "collision/O8_product_cover_090.obj",
+        "collision/O8_product_cover_091.obj",
+        "collision/O8_product_cover_092.obj",
+        "collision/O8_product_cover_093.obj",
+        "collision/O8_product_cover_094.obj",
+        "collision/O8_product_cover_095.obj",
+        "collision/O8_product_cover_096.obj",
+        "collision/O8_product_cover_097.obj",
+        "collision/O8_product_cover_098.obj",
+        "collision/O8_product_cover_099.obj",
+        "collision/O8_product_cover_100.obj",
+        "collision/O8_product_cover_101.obj",
+        "collision/O8_product_cover_102.obj",
+        "collision/O8_product_cover_103.obj",
+        "collision/O8_product_cover_104.obj",
+        "collision/O8_product_cover_105.obj",
+        "collision/O8_product_cover_106.obj",
+        "collision/O8_product_cover_107.obj",
+        "collision/O8_product_cover_108.obj",
+        "collision/O8_product_cover_109.obj",
+        "collision/O8_product_cover_110.obj",
+        "collision/O8_product_cover_111.obj",
+        "collision/O8_product_cover_112.obj",
+        "collision/O8_product_cover_113.obj",
+        "collision/O8_product_cover_114.obj",
+        "collision/O8_product_cover_115.obj",
+        "collision/O8_product_cover_116.obj",
+        "collision/O8_product_cover_117.obj",
+        "collision/O8_product_cover_118.obj",
+        "collision/O8_product_cover_119.obj",
+        "collision/O8_product_cover_120.obj",
+        "collision/O8_product_cover_121.obj",
+        "collision/O8_product_cover_122.obj",
+        "collision/O8_product_cover_123.obj",
+        "collision/O8_product_cover_124.obj",
+        "collision/O8_product_cover_125.obj",
+        "collision/O8_product_cover_126.obj",
+        "collision/O8_product_cover_127.obj",
+        "collision/O8_product_cover_128.obj",
+        "collision/O8_product_cover_129.obj",
+        "collision/O8_product_cover_130.obj",
+        "collision/O8_product_cover_131.obj",
+        "collision/O8_product_cover_132.obj",
+        "collision/O8_product_cover_133.obj",
+        "collision/O8_product_cover_134.obj",
+        "collision/O8_product_cover_135.obj"
+      ],
+      "volume_m3": 6.931775479414151e-05,
+      "mass_kg": 0.03812476513677783,
+      "center_of_mass_m": [
+        0.07039868393823177,
+        0.03513814641162045,
+        0.005288694131174648
+      ],
+      "inertia_kg_m2": [
+        [
+          1.4056872687505207e-05,
+          -6.110181485488833e-08,
+          4.812749260209525e-08
+        ],
+        [
+          -6.110181485488833e-08,
+          4.8595163512279025e-05,
+          2.5879442627571212e-08
+        ],
+        [
+          4.812749260209525e-08,
+          2.5879442627571212e-08,
+          6.112613756257956e-05
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        2.3608889549109335e-05,
+        7.049499075151289e-06,
+        1.949809352908005e-05,
+        1.537069030632665e-05,
+        2.3166855754652715e-05,
+        1.5847810317382027e-05,
+        4.876775724937943e-05,
+        2.8239171655286555e-05,
+        7.497212294538258e-06,
+        2.3610394663364787e-05,
+        0.00012610417701353072,
+        0.00010491886678209994,
+        1.5924376839393517e-05,
+        4.883937731392507e-05,
+        7.182034738661969e-05,
+        1.0887559426464577e-05,
+        1.546319879253133e-06,
+        7.654006691382165e-05,
+        5.34390227358017e-06,
+        1.0839100923476508e-05,
+        6.234994560827545e-05,
+        5.184891682574744e-05,
+        5.3290281442741616e-05,
+        0.00010672248458831746,
+        4.19933046771348e-05,
+        4.803328798175244e-05,
+        3.1866524054180445e-05,
+        4.8078531435180594e-05,
+        1.0940624648014818e-05,
+        6.654863405941569e-05,
+        3.5892985081886764e-05,
+        1.7762736824522563e-05,
+        2.0201824192156437e-05,
+        4.144666297634103e-05,
+        2.7772130067660328e-05,
+        2.7352123623813895e-05,
+        3.0390907113542198e-05,
+        2.22364105439965e-05,
+        1.0014374311140273e-05,
+        4.192142813508326e-05,
+        3.0976883067523886e-06,
+        1.7421765136305112e-05,
+        1.7236560438504966e-05,
+        1.325465973422979e-05,
+        1.3042512023275776e-05,
+        1.1616945414516522e-05,
+        5.745350807728755e-05,
+        2.0865449016582716e-05,
+        2.051749106612988e-06,
+        8.779761373034489e-05,
+        0.00010361035674577579,
+        7.463727524736896e-05,
+        0.00011423825691281309,
+        5.62611046461825e-05,
+        4.10268286259452e-05,
+        8.262776560741258e-06,
+        3.905605458953687e-05,
+        1.2324894839821354e-05,
+        1.8234685128959427e-05,
+        1.0680055481770978e-05,
+        2.6964544687757552e-05,
+        1.211243254317651e-05,
+        1.795850175767555e-05,
+        2.465343445834378e-05,
+        2.5868100436809982e-05,
+        5.4173686976355384e-05,
+        2.8177330186451854e-05,
+        0.00010188181997250467,
+        3.889047287941594e-05,
+        6.127921709264683e-05,
+        3.223461169454822e-05,
+        2.6755860432103873e-05,
+        0.00010419738728728589,
+        0.0003607604787703167,
+        0.00016007645479021448,
+        0.00024311235739560288,
+        0.00046697492552993936,
+        0.0006278696223489533,
+        0.0001810902684269422,
+        0.00010710598184004994,
+        6.13114875136489e-05,
+        0.0005130933668624493,
+        0.0002067635604703355,
+        0.0001362472690971117,
+        9.037546374202066e-05,
+        0.000311639978463063,
+        9.003570625054635e-05,
+        0.0001863172299749749,
+        4.500394879869418e-06,
+        4.956465076588756e-06,
+        5.115331269678336e-05,
+        4.342693708281331e-05,
+        1.3284655238976484e-05,
+        1.528685653084949e-05,
+        3.27919412512756e-05,
+        4.441047416037236e-06,
+        4.070183294402341e-06,
+        1.7654709118630763e-05,
+        2.7787399709211513e-05,
+        2.0615266194567994e-05,
+        2.1217596540168415e-05,
+        1.5744998322020365e-05,
+        3.265157462806201e-05,
+        3.5597511782725633e-06,
+        7.500652108660688e-05,
+        7.730946521178339e-05,
+        0.0003229865161529233,
+        8.463694143756584e-05,
+        0.00028378599029110774,
+        0.00039555448574901675,
+        0.0005814754694029034,
+        0.00010564097533460881,
+        6.213051892700605e-05,
+        0.0001067804239482939,
+        0.000450387459011381,
+        0.00017598606882529566,
+        0.00010763810053049383,
+        2.5730352490427322e-05,
+        5.07035368286779e-05,
+        1.6150321556551717e-05,
+        2.1059257534261633e-05,
+        4.522893868852407e-05,
+        7.659941471160892e-05,
+        4.3922455787992476e-05,
+        6.395645854695431e-05,
+        1.856846949976898e-05,
+        5.795732451474578e-05,
+        2.349760791986455e-05,
+        0.0,
+        1.718618493384838e-05,
+        4.399884687700251e-06,
+        4.715389650300494e-06,
+        1.501154088145995e-06,
+        5.616082120241117e-06,
+        0.0,
+        2.7456280804472044e-05
+      ],
+      "workpiece_symmetric_difference_mm3": 0.0007168014322500232
+    },
+    "B1_sorting_bin": {
+      "size_m": [
+        0.14,
+        0.11,
+        0.025
+      ],
+      "source_stl": "stl/B1_sorting_bin.stl",
+      "source_sha256": "4f954fb31dd1bf7342412ee5c8e67f990872a2e4e31734889ece98244c0b1a0b",
+      "visual": "visual/B1_sorting_bin.obj",
+      "collision": [
+        "collision/B1_sorting_bin_000.obj",
+        "collision/B1_sorting_bin_001.obj",
+        "collision/B1_sorting_bin_002.obj",
+        "collision/B1_sorting_bin_003.obj",
+        "collision/B1_sorting_bin_004.obj"
+      ],
+      "volume_m3": 9.220716666666667e-05,
+      "mass_kg": 0.050713941666666665,
+      "center_of_mass_m": [
+        0.06999999999999999,
+        0.05499999999999998,
+        0.00615220707717947
+      ],
+      "inertia_kg_m2": [
+        [
+          7.068466112331706e-05,
+          -8.735027268559972e-20,
+          -7.279189390466644e-21
+        ],
+        [
+          -8.735027268559972e-20,
+          0.00010718042124831702,
+          1.4558378780933287e-20
+        ],
+        [
+          -7.279189390466644e-21,
+          1.4558378780933287e-20,
+          0.00017303460080041687
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        7.275957614183426e-12,
+        0.0,
+        7.275957614183426e-12,
+        0.0,
+        1.0913936421275139e-11
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "C0_carrier": {
+      "size_m": [
+        0.24,
+        0.22,
+        0.008
+      ],
+      "source_stl": "stl/C0_carrier.stl",
+      "source_sha256": "ce62e8ac0f13133bf556d39389d6f530d9d095361305e1c272bb74d59fbdd0c2",
+      "visual": "visual/C0_carrier.obj",
+      "collision": [
+        "collision/C0_carrier_000.obj"
+      ],
+      "volume_m3": 0.0004172141581314875,
+      "mass_kg": 0.22946778697231812,
+      "center_of_mass_m": [
+        0.12010365918335147,
+        0.11003749342637541,
+        0.004005414489939924
+      ],
+      "inertia_kg_m2": [
+        [
+          0.0009216950851390943,
+          -8.493442091154864e-07,
+          2.4590832428891782e-08
+        ],
+        [
+          -8.493442091154864e-07,
+          0.0010939263073788362,
+          8.89436964166985e-09
+        ],
+        [
+          2.4590832428891782e-08,
+          8.89436964166985e-09,
+          0.002013177780008689
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "C1_l_target": {
+      "size_m": [
+        0.08,
+        0.08,
+        0.011
+      ],
+      "source_stl": "stl/C1_l_target.stl",
+      "source_sha256": "e296c1e83e03e5726f0d66e8f247c25c2ce61999a01a4f60ff640f08309f11e9",
+      "visual": "visual/C1_l_target.obj",
+      "collision": [
+        "collision/C1_l_target_000.obj",
+        "collision/C1_l_target_001.obj",
+        "collision/C1_l_target_002.obj",
+        "collision/C1_l_target_003.obj",
+        "collision/C1_l_target_004.obj",
+        "collision/C1_l_target_005.obj",
+        "collision/C1_l_target_006.obj"
+      ],
+      "volume_m3": 5.2452933151121436e-05,
+      "mass_kg": 0.02884911323311679,
+      "center_of_mass_m": [
+        0.0398478636481145,
+        0.039847863648114504,
+        0.004193459152622869
+      ],
+      "inertia_kg_m2": [
+        [
+          1.526082460585383e-05,
+          1.2575422627289506e-07,
+          2.3290408003083137e-08
+        ],
+        [
+          1.2575422627289506e-07,
+          1.541658460585385e-05,
+          2.3290408003083137e-08
+        ],
+        [
+          2.3290408003083137e-08,
+          2.3290408003083137e-08,
+          3.0320572343591897e-05
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        0.0,
+        2.842170943040401e-14,
+        5.684341886080802e-14,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "C2_cuboid_target": {
+      "size_m": [
+        0.08,
+        0.07,
+        0.008
+      ],
+      "source_stl": "stl/C2_cuboid_target.stl",
+      "source_sha256": "97a0310c71737ca54a1a4ec70c96234bbc5da1d6f8987a8b4ad85fe777d4a9f4",
+      "visual": "visual/C2_cuboid_target.obj",
+      "collision": [
+        "collision/C2_cuboid_target_000.obj"
+      ],
+      "volume_m3": 4.41661871524272e-05,
+      "mass_kg": 0.02429140293383496,
+      "center_of_mass_m": [
+        0.040000000064896526,
+        0.03500316987159301,
+        0.003995951580484838
+      ],
+      "inertia_kg_m2": [
+        [
+          9.909255583804129e-06,
+          5.109990952107584e-18,
+          -1.6084133273122048e-15
+        ],
+        [
+          5.109990952107584e-18,
+          1.2889203036268286e-05,
+          -2.948382562973732e-10
+        ],
+        [
+          -1.6084133273122048e-15,
+          -2.948382562973732e-10,
+          2.254059621953591e-05
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "C3_round_socket": {
+      "size_m": [
+        0.07,
+        0.07,
+        0.035
+      ],
+      "source_stl": "stl/C3_round_socket.stl",
+      "source_sha256": "b0fe2159302d4a9bb6cf40c10d651e6cd9c1966603a1911dd18a58a848d6153b",
+      "visual": "visual/C3_round_socket.obj",
+      "collision": [
+        "collision/C3_round_socket_000.obj",
+        "collision/C3_round_socket_001.obj",
+        "collision/C3_round_socket_002.obj",
+        "collision/C3_round_socket_003.obj",
+        "collision/C3_round_socket_004.obj",
+        "collision/C3_round_socket_005.obj",
+        "collision/C3_round_socket_006.obj",
+        "collision/C3_round_socket_007.obj",
+        "collision/C3_round_socket_008.obj",
+        "collision/C3_round_socket_009.obj",
+        "collision/C3_round_socket_010.obj",
+        "collision/C3_round_socket_011.obj",
+        "collision/C3_round_socket_012.obj",
+        "collision/C3_round_socket_013.obj",
+        "collision/C3_round_socket_014.obj",
+        "collision/C3_round_socket_015.obj",
+        "collision/C3_round_socket_016.obj",
+        "collision/C3_round_socket_017.obj",
+        "collision/C3_round_socket_018.obj",
+        "collision/C3_round_socket_019.obj",
+        "collision/C3_round_socket_020.obj",
+        "collision/C3_round_socket_021.obj",
+        "collision/C3_round_socket_022.obj",
+        "collision/C3_round_socket_023.obj",
+        "collision/C3_round_socket_024.obj",
+        "collision/C3_round_socket_025.obj",
+        "collision/C3_round_socket_026.obj",
+        "collision/C3_round_socket_027.obj",
+        "collision/C3_round_socket_028.obj",
+        "collision/C3_round_socket_029.obj",
+        "collision/C3_round_socket_030.obj",
+        "collision/C3_round_socket_031.obj",
+        "collision/C3_round_socket_032.obj",
+        "collision/C3_round_socket_033.obj",
+        "collision/C3_round_socket_034.obj",
+        "collision/C3_round_socket_035.obj",
+        "collision/C3_round_socket_036.obj",
+        "collision/C3_round_socket_037.obj",
+        "collision/C3_round_socket_038.obj",
+        "collision/C3_round_socket_039.obj",
+        "collision/C3_round_socket_040.obj",
+        "collision/C3_round_socket_041.obj",
+        "collision/C3_round_socket_042.obj",
+        "collision/C3_round_socket_043.obj",
+        "collision/C3_round_socket_044.obj",
+        "collision/C3_round_socket_045.obj",
+        "collision/C3_round_socket_046.obj",
+        "collision/C3_round_socket_047.obj",
+        "collision/C3_round_socket_048.obj",
+        "collision/C3_round_socket_049.obj",
+        "collision/C3_round_socket_050.obj",
+        "collision/C3_round_socket_051.obj",
+        "collision/C3_round_socket_052.obj",
+        "collision/C3_round_socket_053.obj",
+        "collision/C3_round_socket_054.obj",
+        "collision/C3_round_socket_055.obj",
+        "collision/C3_round_socket_056.obj",
+        "collision/C3_round_socket_057.obj",
+        "collision/C3_round_socket_058.obj",
+        "collision/C3_round_socket_059.obj",
+        "collision/C3_round_socket_060.obj",
+        "collision/C3_round_socket_061.obj",
+        "collision/C3_round_socket_062.obj",
+        "collision/C3_round_socket_063.obj",
+        "collision/C3_round_socket_064.obj",
+        "collision/C3_round_socket_065.obj",
+        "collision/C3_round_socket_066.obj",
+        "collision/C3_round_socket_067.obj",
+        "collision/C3_round_socket_068.obj",
+        "collision/C3_round_socket_069.obj",
+        "collision/C3_round_socket_070.obj",
+        "collision/C3_round_socket_071.obj",
+        "collision/C3_round_socket_072.obj",
+        "collision/C3_round_socket_073.obj",
+        "collision/C3_round_socket_074.obj",
+        "collision/C3_round_socket_075.obj",
+        "collision/C3_round_socket_076.obj",
+        "collision/C3_round_socket_077.obj",
+        "collision/C3_round_socket_078.obj",
+        "collision/C3_round_socket_079.obj",
+        "collision/C3_round_socket_080.obj",
+        "collision/C3_round_socket_081.obj",
+        "collision/C3_round_socket_082.obj",
+        "collision/C3_round_socket_083.obj",
+        "collision/C3_round_socket_084.obj",
+        "collision/C3_round_socket_085.obj",
+        "collision/C3_round_socket_086.obj",
+        "collision/C3_round_socket_087.obj",
+        "collision/C3_round_socket_088.obj",
+        "collision/C3_round_socket_089.obj",
+        "collision/C3_round_socket_090.obj",
+        "collision/C3_round_socket_091.obj",
+        "collision/C3_round_socket_092.obj",
+        "collision/C3_round_socket_093.obj",
+        "collision/C3_round_socket_094.obj",
+        "collision/C3_round_socket_095.obj",
+        "collision/C3_round_socket_096.obj",
+        "collision/C3_round_socket_097.obj",
+        "collision/C3_round_socket_098.obj",
+        "collision/C3_round_socket_099.obj",
+        "collision/C3_round_socket_100.obj",
+        "collision/C3_round_socket_101.obj",
+        "collision/C3_round_socket_102.obj",
+        "collision/C3_round_socket_103.obj",
+        "collision/C3_round_socket_104.obj",
+        "collision/C3_round_socket_105.obj",
+        "collision/C3_round_socket_106.obj",
+        "collision/C3_round_socket_107.obj",
+        "collision/C3_round_socket_108.obj",
+        "collision/C3_round_socket_109.obj",
+        "collision/C3_round_socket_110.obj",
+        "collision/C3_round_socket_111.obj",
+        "collision/C3_round_socket_112.obj",
+        "collision/C3_round_socket_113.obj",
+        "collision/C3_round_socket_114.obj",
+        "collision/C3_round_socket_115.obj",
+        "collision/C3_round_socket_116.obj",
+        "collision/C3_round_socket_117.obj",
+        "collision/C3_round_socket_118.obj",
+        "collision/C3_round_socket_119.obj",
+        "collision/C3_round_socket_120.obj",
+        "collision/C3_round_socket_121.obj",
+        "collision/C3_round_socket_122.obj",
+        "collision/C3_round_socket_123.obj",
+        "collision/C3_round_socket_124.obj",
+        "collision/C3_round_socket_125.obj",
+        "collision/C3_round_socket_126.obj",
+        "collision/C3_round_socket_127.obj",
+        "collision/C3_round_socket_128.obj"
+      ],
+      "volume_m3": 0.0001547469052670596,
+      "mass_kg": 0.08511079789688278,
+      "center_of_mass_m": [
+        0.034999999943963335,
+        0.03499999994398167,
+        0.01696643909957009
+      ],
+      "inertia_kg_m2": [
+        [
+          4.368080908465027e-05,
+          4.367513634279986e-19,
+          2.7557446006587762e-14
+        ],
+        [
+          4.367513634279986e-19,
+          4.368080908465026e-05,
+          2.7530847848554997e-14
+        ],
+        [
+          2.7557446006587762e-14,
+          2.7530847848554997e-14,
+          6.97394595533054e-05
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        0.0003666479268531475,
+        0.000261164028188432,
+        0.00031822223320432386,
+        0.00018794993286519457,
+        0.0003993720379185106,
+        0.0006720002432984984,
+        4.888968635441415e-05,
+        0.0003222325852902941,
+        0.0005151904164222287,
+        0.0003957164585699502,
+        0.0005905188004362572,
+        0.0005349118629283112,
+        1.4306624052551342e-05,
+        0.00020013806897623,
+        0.0008984705234524881,
+        0.0009848774550391681,
+        0.0010561738413343846,
+        0.0008806238688521262,
+        0.00011564604290015268,
+        6.126761797986546e-05,
+        0.0005984620280514719,
+        0.0006110581887242006,
+        0.0004590603588212616,
+        0.0005136809314763013,
+        0.00022037903954696958,
+        7.67270338428716e-05,
+        0.0006653644837797401,
+        0.00040590588162103813,
+        0.00023677446336023422,
+        0.00030389789424134506,
+        0.0002865351706304864,
+        0.0004079341667875269,
+        0.0003666479270805212,
+        6.4365975731561775e-06,
+        1.6847136521391803e-06,
+        0.0005568119270265015,
+        0.0001830970743412763,
+        0.00026474345406768407,
+        0.0001907166816863537,
+        0.0002682706161749593,
+        0.0003530881846245393,
+        6.562751877936535e-05,
+        0.0002923166750861128,
+        0.00025185898664403794,
+        0.00029127970640274725,
+        0.00014306945013231598,
+        8.658819365336967e-05,
+        0.001100454077231916,
+        0.0010027832331616082,
+        0.0011224017798667774,
+        0.0003814763422269607,
+        0.00013291826348904578,
+        0.0005966896600284599,
+        0.000427394631401512,
+        0.000481451779364761,
+        0.000269425694682468,
+        0.00014990685338034382,
+        0.00034185984520718193,
+        0.0006757973425237651,
+        0.000575141068566154,
+        0.00021063988367586717,
+        0.0002846139116172708,
+        0.0002731408482077313,
+        0.0003830680929013397,
+        0.00034379723399524664,
+        7.423333863698645e-05,
+        8.222759947784652e-05,
+        0.0005438063698193218,
+        2.027194182119274e-05,
+        0.0006684185883614191,
+        0.00033537685624196456,
+        0.00010916200596966519,
+        0.0004672399115861481,
+        0.00016829289756969956,
+        0.00028708772481422784,
+        0.00013928471912549867,
+        0.00010622967704421171,
+        0.0002498975837852413,
+        0.00022666589302389184,
+        7.439873547809839e-05,
+        0.00013759193529949698,
+        0.00033059789984690724,
+        0.0002987571014045898,
+        0.00014269438065639406,
+        0.00016725296427466674,
+        0.00025150278531782533,
+        0.00021746750815054838,
+        0.0004140061744237755,
+        0.00010064489299566048,
+        0.0003317023671343122,
+        0.0005688369413974215,
+        1.7658147726251627e-06,
+        0.0005868670231166107,
+        5.633897706047719e-05,
+        5.631198189348652e-05,
+        0.00038312254594075057,
+        0.00034379723342681245,
+        0.00025495531940578076,
+        0.0003900914821315382,
+        0.00016913184401801118,
+        0.0004206242131203908,
+        0.0007235431210119714,
+        0.0004323729129964704,
+        0.00021319440429579117,
+        0.00046246473516475817,
+        0.00047072581776319566,
+        0.00032324738970146427,
+        0.0005863394826519652,
+        9.978238654184679e-05,
+        0.00046578903175031883,
+        0.0010754977749911632,
+        0.0012191554242235725,
+        0.0010983493943967915,
+        0.00020156508685431618,
+        0.00019174960107193328,
+        0.0005048456706617799,
+        0.000315841624683344,
+        0.00014022476466379885,
+        0.00020028693086260319,
+        0.0002174751832626498,
+        8.671445402796962e-05,
+        0.00016606324788881466,
+        0.00019817573729596916,
+        0.000365944662576112,
+        0.0006076506155068273,
+        7.397638728434686e-05,
+        4.3257524566797656e-05,
+        0.00040830086481946637
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "C4_product_nest": {
+      "size_m": [
+        0.15,
+        0.08600000000000001,
+        0.01
+      ],
+      "source_stl": "stl/C4_product_nest.stl",
+      "source_sha256": "4965c386d2be06694ed0153f0dd90fa8c6a50a6ce2c0bb7689497ac8c2212500",
+      "visual": "visual/C4_product_nest.obj",
+      "collision": [
+        "collision/C4_product_nest_000.obj",
+        "collision/C4_product_nest_001.obj",
+        "collision/C4_product_nest_002.obj",
+        "collision/C4_product_nest_003.obj"
+      ],
+      "volume_m3": 0.00010214283260332573,
+      "mass_kg": 0.05617855793182915,
+      "center_of_mass_m": [
+        0.07480372589788728,
+        0.042956962212858545,
+        0.004001505726137479
+      ],
+      "inertia_kg_m2": [
+        [
+          3.436357559099221e-05,
+          -8.870684831632716e-08,
+          5.511538532845188e-08
+        ],
+        [
+          -8.870684831632716e-08,
+          0.00010388773202421284,
+          1.208536360979431e-08
+        ],
+        [
+          5.511538532845188e-08,
+          1.208536360979431e-08,
+          0.00013764588786061406
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        1.0681151962899094e-06,
+        1.0681151962899094e-06,
+        1.0681151820790546e-06
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "D0_case": {
+      "size_m": [
+        0.18,
+        0.16,
+        0.096
+      ],
+      "source_stl": "stl/D0_case.stl",
+      "source_sha256": "a60b2a4a93d4226c433326af61532819afd68171fdf9beffcec025b9c48629a9",
+      "visual": "visual/D0_case.obj",
+      "collision": [
+        "collision/D0_case_000.obj",
+        "collision/D0_case_001.obj",
+        "collision/D0_case_002.obj",
+        "collision/D0_case_003.obj"
+      ],
+      "volume_m3": 0.00048606161816619307,
+      "mass_kg": 0.26733388999140617,
+      "center_of_mass_m": [
+        0.08999999998135845,
+        0.09406181613056139,
+        0.029380260491725207
+      ],
+      "inertia_kg_m2": [
+        [
+          0.0009454518326736038,
+          -1.0997003343214164e-13,
+          3.2273142195306183e-13
+        ],
+        [
+          -1.0997003343214164e-13,
+          0.0013985952122281399,
+          -8.490861941390922e-05
+        ],
+        [
+          3.2273142195306183e-13,
+          -8.490861941390922e-05,
+          0.0018540466823772678
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "D0_roof": {
+      "size_m": [
+        0.18,
+        0.16,
+        0.0040000000000000036
+      ],
+      "source_stl": "stl/D0_roof.stl",
+      "source_sha256": "2013cacb9b9e7bca1ae01f26b7501f0e8890d5ae96af65c2cf30370384c5b855",
+      "visual": "visual/D0_roof.obj",
+      "collision": [
+        "collision/D0_roof_000.obj"
+      ],
+      "volume_m3": 0.00011498218652410536,
+      "mass_kg": 0.06324020258825795,
+      "center_of_mass_m": [
+        0.08999999995334404,
+        0.07999999997799387,
+        0.09799999999999998
+      ],
+      "inertia_kg_m2": [
+        [
+          0.00013491480434175388,
+          -7.453889935837843e-18,
+          -3.494010907423989e-19
+        ],
+        [
+          -7.453889935837843e-18,
+          0.00017024948714170458,
+          -1.164670302474663e-19
+        ],
+        [
+          -3.494010907423989e-19,
+          -1.164670302474663e-19,
+          0.0003049956509432213
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "D1_drawer": {
+      "size_m": [
+        0.14800000000000002,
+        0.13999999999999999,
+        0.025
+      ],
+      "source_stl": "stl/D1_drawer.stl",
+      "source_sha256": "357fb8faeab284472145a435b33f04f946625799abfe131ea68c5ebc3f538f5a",
+      "visual": "visual/D1_drawer.obj",
+      "collision": [
+        "collision/D1_drawer_000.obj",
+        "collision/D1_drawer_001.obj",
+        "collision/D1_drawer_002.obj",
+        "collision/D1_drawer_003.obj",
+        "collision/D1_drawer_004.obj",
+        "collision/D1_drawer_005.obj",
+        "collision/D1_drawer_006.obj",
+        "collision/D1_drawer_007.obj",
+        "collision/D1_drawer_008.obj",
+        "collision/D1_drawer_009.obj",
+        "collision/D1_drawer_010.obj",
+        "collision/D1_drawer_011.obj",
+        "collision/D1_drawer_012.obj",
+        "collision/D1_drawer_013.obj",
+        "collision/D1_drawer_014.obj",
+        "collision/D1_drawer_015.obj",
+        "collision/D1_drawer_016.obj",
+        "collision/D1_drawer_017.obj",
+        "collision/D1_drawer_018.obj",
+        "collision/D1_drawer_019.obj",
+        "collision/D1_drawer_020.obj",
+        "collision/D1_drawer_021.obj",
+        "collision/D1_drawer_022.obj",
+        "collision/D1_drawer_023.obj",
+        "collision/D1_drawer_024.obj",
+        "collision/D1_drawer_025.obj",
+        "collision/D1_drawer_026.obj",
+        "collision/D1_drawer_027.obj",
+        "collision/D1_drawer_028.obj",
+        "collision/D1_drawer_029.obj",
+        "collision/D1_drawer_030.obj",
+        "collision/D1_drawer_031.obj",
+        "collision/D1_drawer_032.obj",
+        "collision/D1_drawer_033.obj",
+        "collision/D1_drawer_034.obj",
+        "collision/D1_drawer_035.obj",
+        "collision/D1_drawer_036.obj",
+        "collision/D1_drawer_037.obj",
+        "collision/D1_drawer_038.obj",
+        "collision/D1_drawer_039.obj",
+        "collision/D1_drawer_040.obj",
+        "collision/D1_drawer_041.obj",
+        "collision/D1_drawer_042.obj",
+        "collision/D1_drawer_043.obj",
+        "collision/D1_drawer_044.obj",
+        "collision/D1_drawer_045.obj",
+        "collision/D1_drawer_046.obj",
+        "collision/D1_drawer_047.obj",
+        "collision/D1_drawer_048.obj",
+        "collision/D1_drawer_049.obj",
+        "collision/D1_drawer_050.obj",
+        "collision/D1_drawer_051.obj",
+        "collision/D1_drawer_052.obj",
+        "collision/D1_drawer_053.obj",
+        "collision/D1_drawer_054.obj",
+        "collision/D1_drawer_055.obj",
+        "collision/D1_drawer_056.obj",
+        "collision/D1_drawer_057.obj",
+        "collision/D1_drawer_058.obj",
+        "collision/D1_drawer_059.obj",
+        "collision/D1_drawer_060.obj",
+        "collision/D1_drawer_061.obj",
+        "collision/D1_drawer_062.obj",
+        "collision/D1_drawer_063.obj",
+        "collision/D1_drawer_064.obj",
+        "collision/D1_drawer_065.obj",
+        "collision/D1_drawer_066.obj",
+        "collision/D1_drawer_067.obj",
+        "collision/D1_drawer_068.obj",
+        "collision/D1_drawer_069.obj",
+        "collision/D1_drawer_070.obj",
+        "collision/D1_drawer_071.obj",
+        "collision/D1_drawer_072.obj",
+        "collision/D1_drawer_073.obj",
+        "collision/D1_drawer_074.obj",
+        "collision/D1_drawer_075.obj",
+        "collision/D1_drawer_076.obj",
+        "collision/D1_drawer_077.obj",
+        "collision/D1_drawer_078.obj",
+        "collision/D1_drawer_079.obj",
+        "collision/D1_drawer_080.obj",
+        "collision/D1_drawer_081.obj",
+        "collision/D1_drawer_082.obj",
+        "collision/D1_drawer_083.obj",
+        "collision/D1_drawer_084.obj",
+        "collision/D1_drawer_085.obj",
+        "collision/D1_drawer_086.obj",
+        "collision/D1_drawer_087.obj",
+        "collision/D1_drawer_088.obj",
+        "collision/D1_drawer_089.obj",
+        "collision/D1_drawer_090.obj",
+        "collision/D1_drawer_091.obj",
+        "collision/D1_drawer_092.obj",
+        "collision/D1_drawer_093.obj",
+        "collision/D1_drawer_094.obj",
+        "collision/D1_drawer_095.obj",
+        "collision/D1_drawer_096.obj",
+        "collision/D1_drawer_097.obj",
+        "collision/D1_drawer_098.obj",
+        "collision/D1_drawer_099.obj",
+        "collision/D1_drawer_100.obj",
+        "collision/D1_drawer_101.obj",
+        "collision/D1_drawer_102.obj",
+        "collision/D1_drawer_103.obj",
+        "collision/D1_drawer_104.obj",
+        "collision/D1_drawer_105.obj",
+        "collision/D1_drawer_106.obj",
+        "collision/D1_drawer_107.obj",
+        "collision/D1_drawer_108.obj",
+        "collision/D1_drawer_109.obj",
+        "collision/D1_drawer_110.obj",
+        "collision/D1_drawer_111.obj",
+        "collision/D1_drawer_112.obj",
+        "collision/D1_drawer_113.obj",
+        "collision/D1_drawer_114.obj",
+        "collision/D1_drawer_115.obj",
+        "collision/D1_drawer_116.obj",
+        "collision/D1_drawer_117.obj",
+        "collision/D1_drawer_118.obj",
+        "collision/D1_drawer_119.obj",
+        "collision/D1_drawer_120.obj",
+        "collision/D1_drawer_121.obj",
+        "collision/D1_drawer_122.obj",
+        "collision/D1_drawer_123.obj",
+        "collision/D1_drawer_124.obj",
+        "collision/D1_drawer_125.obj",
+        "collision/D1_drawer_126.obj",
+        "collision/D1_drawer_127.obj",
+        "collision/D1_drawer_128.obj",
+        "collision/D1_drawer_129.obj",
+        "collision/D1_drawer_130.obj",
+        "collision/D1_drawer_131.obj",
+        "collision/D1_drawer_132.obj",
+        "collision/D1_drawer_133.obj",
+        "collision/D1_drawer_134.obj",
+        "collision/D1_drawer_135.obj"
+      ],
+      "volume_m3": 0.0001333130789858084,
+      "mass_kg": 0.07332219344219462,
+      "center_of_mass_m": [
+        0.090005935496575,
+        0.07474365304317958,
+        0.01953239571223998
+      ],
+      "inertia_kg_m2": [
+        [
+          0.00014989587821222702,
+          1.9472604882255037e-08,
+          3.0786136744125524e-10
+        ],
+        [
+          1.9472604882255037e-08,
+          0.00015975161716457853,
+          -8.415856386239369e-08
+        ],
+        [
+          3.0786136744125524e-10,
+          -8.415856386239369e-08,
+          0.0003040173178426118
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.001068115234375,
+        0.0010681152416509576,
+        0.0006690978887036181,
+        9.307866048402502e-05,
+        2.567385613909748e-05,
+        8.133737768367677e-06,
+        3.6810562954736614e-05,
+        2.7044185616331706e-05,
+        1.716800272169583e-05,
+        6.045205990734548e-06,
+        6.170398050897585e-06,
+        1.997179021867579e-05,
+        3.935524955422931e-06,
+        5.0850041831140835e-06,
+        7.49068068572889e-07,
+        1.2707701289194073e-05,
+        1.7623280431644517e-05,
+        7.83889503858104e-06,
+        1.3639166019319138e-05,
+        5.814804331538692e-06,
+        5.865153954676128e-06,
+        3.778206189297695e-06,
+        2.848097440277808e-06,
+        4.484210657240695e-06,
+        5.413798718045815e-06,
+        1.8369383670502337e-05,
+        1.403344756306657e-05,
+        7.551129195149109e-06,
+        4.093329280530078e-07,
+        6.173773364759327e-06,
+        2.567385613909748e-05,
+        8.133737768367677e-06,
+        3.681056296894747e-05,
+        2.7044185617136618e-05,
+        1.716800275011754e-05,
+        6.045206052907037e-06,
+        6.1703980704375105e-06,
+        1.997179021334672e-05,
+        3.9355249500938605e-06,
+        5.0850041342642704e-06,
+        7.490680534738559e-07,
+        1.2707701289194073e-05,
+        1.762328039700556e-05,
+        7.838895011935687e-06,
+        1.3639166003331926e-05,
+        5.8148043048933395e-06,
+        5.8651539520115925e-06,
+        3.7782061946267653e-06,
+        2.8480974411659865e-06,
+        4.484210652799803e-06,
+        5.413798748576948e-06,
+        1.8369383693594976e-05,
+        1.4033447568451152e-05,
+        7.551129181992966e-06,
+        4.0933292916323083e-07,
+        6.173773366979773e-06,
+        6.046936460502028e-06,
+        6.04693645961385e-06,
+        6.0984724763180065e-06,
+        6.0984724763180065e-06,
+        2.0197825020829008e-06,
+        2.019782508744239e-06,
+        1.1354838376415044e-05,
+        1.1354838375776666e-05,
+        6.650970321764316e-06,
+        6.650970325317029e-06,
+        3.854453723039358e-06,
+        3.85445372215118e-06,
+        3.341834297350063e-05,
+        6.143034565447847e-05,
+        3.658080180832246e-05,
+        7.769767243809289e-05,
+        1.345049757531247e-05,
+        3.591700360455752e-05,
+        6.17377342515546e-06,
+        1.9194788924925543e-05,
+        6.412338338057655e-05,
+        3.284933081465491e-05,
+        2.741790887994533e-06,
+        7.725271058134364e-06,
+        4.390142001420294e-05,
+        1.136882589641841e-05,
+        2.6450487293272484e-05,
+        3.192384159761419e-05,
+        2.8130353190713997e-06,
+        1.1655553314171563e-06,
+        2.3544657418161918e-07,
+        7.65841993344285e-06,
+        2.239589446284551e-06,
+        9.723508776926515e-06,
+        8.5758630699595e-06,
+        1.6851440426957076e-06,
+        2.447255208054555e-05,
+        8.716401168562538e-06,
+        2.5780594446179333e-05,
+        8.098158346195317e-06,
+        3.6917519559726e-05,
+        2.9068284265021394e-05,
+        1.9190064104029902e-05,
+        8.591209109287679e-06,
+        2.5780594435521192e-05,
+        8.098158349845175e-06,
+        3.6917519551205036e-05,
+        2.9068284275679535e-05,
+        1.9190064137780682e-05,
+        8.591209143038459e-06,
+        8.716401155239861e-06,
+        2.4472552031695738e-05,
+        1.6851439982312755e-06,
+        8.57586312014158e-06,
+        9.72350873718053e-06,
+        2.2395894492821533e-06,
+        7.658419939327032e-06,
+        2.3544658284135878e-07,
+        1.1655553274203534e-06,
+        2.8130352831001737e-06,
+        3.1923841599390546e-05,
+        2.6450487332352335e-05,
+        1.1368825867996701e-05,
+        4.390141997512309e-05,
+        7.725271043035331e-06,
+        2.741790877336392e-06,
+        3.2849330821760336e-05,
+        6.412338336991841e-05,
+        1.9194788928478257e-05,
+        6.173773423379103e-06,
+        3.3418342977053345e-05,
+        6.143034565625483e-05,
+        3.658080180299339e-05,
+        7.769767243631653e-05,
+        1.345049763748496e-05,
+        3.591700354593774e-05,
+        0.0,
+        0.0,
+        0.0,
+        1.4551915228366852e-11
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "D2_handle": {
+      "size_m": [
+        0.039999999999999994,
+        0.055,
+        0.024999999999999998
+      ],
+      "source_stl": "stl/D2_handle.stl",
+      "source_sha256": "f9b025640a931362334931387fc59c9f94ac02dde7bf621df3ebac929ce99862",
+      "visual": "visual/D2_handle.obj",
+      "collision": [
+        "collision/D2_handle_000.obj",
+        "collision/D2_handle_001.obj",
+        "collision/D2_handle_002.obj",
+        "collision/D2_handle_003.obj"
+      ],
+      "volume_m3": 2.730826264905432e-05,
+      "mass_kg": 0.015019544456979877,
+      "center_of_mass_m": [
+        0.08999999999910231,
+        -0.028629972276597363,
+        0.031213695120124837
+      ],
+      "inertia_kg_m2": [
+        [
+          4.369427728854172e-06,
+          4.2642219368292645e-16,
+          -2.988107244786557e-17
+        ],
+        [
+          4.2642219368292645e-16,
+          1.7721604281964614e-06,
+          1.3601422219134316e-07
+        ],
+        [
+          -2.988107244786557e-17,
+          1.3601422219134316e-07,
+          4.798585050881383e-06
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        0.0,
+        0.0,
+        0.00017973581998376176
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "D3_guide_left": {
+      "size_m": [
+        0.012,
+        0.14,
+        0.016
+      ],
+      "source_stl": "stl/D3_guide_left.stl",
+      "source_sha256": "8a468f83bf97901e20107023d7a7d33c5ff47b2e68a37d907d6ddb1d86af22ce",
+      "visual": "visual/D3_guide_left.obj",
+      "collision": [
+        "collision/D3_guide_left_000.obj",
+        "collision/D3_guide_left_001.obj"
+      ],
+      "volume_m3": 1.9546442104928627e-05,
+      "mass_kg": 0.010750543157710745,
+      "center_of_mass_m": [
+        0.012187593165406315,
+        0.07000000004644719,
+        0.016613199561009828
+      ],
+      "inertia_kg_m2": [
+        [
+          1.7333375930153582e-05,
+          3.433375259801402e-16,
+          -3.9819228850851346e-08
+        ],
+        [
+          3.433375259801402e-16,
+          3.37260186251565e-07,
+          -1.3888602367142975e-15
+        ],
+        [
+          -3.9819228850851346e-08,
+          -1.3888602367142975e-15,
+          1.71816733402706e-05
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0,
+        4.547473508864641e-13
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "D3_guide_right": {
+      "size_m": [
+        0.01200000000000001,
+        0.14,
+        0.016
+      ],
+      "source_stl": "stl/D3_guide_right.stl",
+      "source_sha256": "33a764da0ff82c1c7f6f9d39e9a4bc618cbc6eadac484b0ce2912d52c1772fd5",
+      "visual": "visual/D3_guide_right.obj",
+      "collision": [
+        "collision/D3_guide_right_000.obj",
+        "collision/D3_guide_right_001.obj"
+      ],
+      "volume_m3": 1.954644210492857e-05,
+      "mass_kg": 0.010750543157710714,
+      "center_of_mass_m": [
+        0.16781240683459434,
+        0.07000000004644745,
+        0.01661319956100989
+      ],
+      "inertia_kg_m2": [
+        [
+          1.7333375930153406e-05,
+          -3.430973127302548e-16,
+          3.98192288509619e-08
+        ],
+        [
+          -3.430973127302548e-16,
+          3.37260186250212e-07,
+          -1.3888092823885642e-15
+        ],
+        [
+          3.98192288509619e-08,
+          -1.3888092823885642e-15,
+          1.718167334026907e-05
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        7.275957614183426e-12,
+        1.8189894035458565e-12
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "D3_skid": {
+      "size_m": [
+        0.010000000000000002,
+        0.14,
+        0.006
+      ],
+      "source_stl": "stl/D3_skid.stl",
+      "source_sha256": "4aa18720964fb112b11a9a391aaf196322a4552e092dc41ac65c004d657cc898",
+      "visual": "visual/D3_skid.obj",
+      "collision": [
+        "collision/D3_skid_000.obj"
+      ],
+      "volume_m3": 8.152604713427113e-06,
+      "mass_kg": 0.004483932592384912,
+      "center_of_mass_m": [
+        0.030000000000329992,
+        0.07000000004626036,
+        0.0109745194443313
+      ],
+      "inertia_kg_m2": [
+        [
+          7.147551796970608e-06,
+          -3.639594695233322e-21,
+          -2.7915691312439578e-18
+        ],
+        [
+          -3.639594695233322e-21,
+          5.165570368546153e-08,
+          -2.4743557060875286e-16
+        ],
+        [
+          -2.7915691312439578e-18,
+          -2.4743557060875286e-16,
+          7.172309727566398e-06
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        0.0
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    },
+    "D3_stop_bushing": {
+      "size_m": [
+        0.005400000095367424,
+        0.005400000095367438,
+        0.012
+      ],
+      "source_stl": "stl/D3_stop_bushing.stl",
+      "source_sha256": "5b17529c29a919d0a2f0dd6dc4b5149ea4dfbf423f584342cda60d9d4a3e5e11",
+      "visual": "visual/D3_stop_bushing.obj",
+      "collision": [
+        "collision/D3_stop_bushing_000.obj"
+      ],
+      "volume_m3": 1.658094895418782e-07,
+      "mass_kg": 9.119521924803301e-05,
+      "center_of_mass_m": [
+        0.09000000000460381,
+        0.05000000000460333,
+        0.014000000000000117
+      ],
+      "inertia_kg_m2": [
+        [
+          1.3263412722964844e-09,
+          4.151412699250508e-21,
+          1.137373342260413e-21
+        ],
+        [
+          4.151412699250508e-21,
+          1.326341272291025e-09,
+          4.8338367046067555e-22
+        ],
+        [
+          1.137373342260413e-21,
+          4.8338367046067555e-22,
+          4.639972826350181e-10
+        ]
+      ],
+      "convexification_added_volume_mm3": [
+        8.147281243964244e-05
+      ],
+      "workpiece_symmetric_difference_mm3": null
+    }
+  },
+  "modules": [
+    {
+      "type": "C1_l_target",
+      "offset": [
+        0.01,
+        0.015,
+        0.008
+      ],
+      "size": [
+        0.08,
+        0.08
+      ]
+    },
+    {
+      "type": "C2_cuboid_target",
+      "offset": [
+        0.14,
+        0.015,
+        0.008
+      ],
+      "size": [
+        0.08,
+        0.07
+      ]
+    },
+    {
+      "type": "C3_round_socket",
+      "offset": [
+        0.008,
+        0.125,
+        0.008
+      ],
+      "size": [
+        0.07,
+        0.07
+      ]
+    },
+    {
+      "type": "C4_product_nest",
+      "offset": [
+        0.085,
+        0.115,
+        0.008
+      ],
+      "size": [
+        0.15,
+        0.08600000000000001
+      ]
+    }
+  ]
+}

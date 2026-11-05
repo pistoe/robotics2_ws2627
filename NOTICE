@@ -1,0 +1,43 @@
+Franka Panda simulation environment
+
+Project packages declare Apache-2.0, except panda_rviz (BSD-3-Clause). See LICENSE
+and src/panda_rviz/LICENSE.
+
+Vendored model and meshes:
+  MuJoCo Menagerie / franka_emika_panda
+  https://github.com/google-deepmind/mujoco_menagerie/tree/cda5236f98383f6fbaa4820c6b18dba892cd087f/franka_emika_panda
+  Apache-2.0; license retained at src/panda_description/mjcf/LICENSE.
+  Local modifications are listed in src/panda_description/mjcf/UPSTREAM.md.
+
+Adapted semantic robot configuration:
+  MoveIt Resources / panda_moveit_config
+  https://github.com/moveit/moveit_resources/tree/e1657c128ea61621777a041e3783c9c7c93db4ca/panda_moveit_config
+  Apache-2.0; license retained at src/panda_bringup/config/LICENSE.
+  The SRDF was adapted for the TCP chain, ready state and movable hand group.
+
+Franka message interfaces:
+  https://github.com/lvjonok/pixi_panda_ros2/tree/167960fbd64d52c7fa31eeb70babfe65f2416062
+  franka_msgs declares Apache-2.0 and retains its upstream copyright notices.
+
+Other dependencies, including ROS, MoveIt, MuJoCo and libfranka, are fetched
+at image build time and retain their respective upstream licenses. Pinned
+versions and commits are recorded in versions.lock.yaml.
+
+MuJoCo runtime overlay:
+  https://github.com/ros-controls/mujoco_ros2_control/tree/178b1c39e5010185116bc89b4e94cbb25b825f61
+  Apache-2.0; upstream copyright notices are retained in the patched source.
+  container/patches/mujoco-runtime.patch adds readiness gating, reset coordination
+  and low-rate frozen-state publication for late subscribers.
+  Its lodepng dependency is pinned; LODEPNG_LICENSE is retained in the installed package share directory.
+
+RViz image display extension:
+  https://github.com/ros2/rviz/tree/e2e1a1562ae5a99975ec4052856064becec9da0c
+  src/panda_rviz extends the RViz 14.1.24 Image display using its protected API.
+  BSD-3-Clause; Willow Garage (2012), Bosch Software Innovations (2017),
+  TNG Technology Consulting (2020).
+  The original license is retained in src/panda_rviz/LICENSE.
+  Local changes clear a disconnected image callback before its filter is destroyed.
+
+Student runtime patch:
+  container/patches/student-state.patch removes the free-joint editing service
+  and restricts reset requests to an unmodified initial-state reset. Apache-2.0.
