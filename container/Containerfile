@@ -72,18 +72,32 @@ COPY assets/ /opt/panda/docs/assets/
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-opencv ros-jazzy-cv-bridge ros-jazzy-tf2-geometry-msgs \
     && rm -rf /var/lib/apt/lists/*
-RUN python - <<'PY'
-import subprocess
-import yaml
-import mujoco
-with open('/opt/panda/versions.lock.yaml') as source:
-    pinned = yaml.safe_load(source)['packages']
-for name, expected in pinned.items():
-    if name.startswith(('ros-', 'libgl')):
-        actual = subprocess.check_output(['dpkg-query', '-W', '-f=${Version}', name], text=True)
-        assert actual == expected, f'{name}: expected {expected}, installed {actual}'
-assert mujoco.__version__ == pinned['python-mujoco']
-PY
+#RUN python - <<'PY'
+#import subprocess
+#import yaml
+#import mujoco
+#with open('/opt/panda/versions.lock.yaml') as source:
+#    pinned = yaml.safe_load(source)['packages']
+#for name, expected in pinned.items():
+#    if name.startswith(('ros-', 'libgl')):
+#        actual = subprocess.check_output(['dpkg-query', '-W', '-f=${Version}', name], text=True)
+#        assert actual == expected, f'{name}: expected {expected}, installed {actual}'
+#assert mujoco.__version__ == pinned['python-mujoco']
+#PY
+
+
+
+
+# heredocs can apparently not be parsed with buildah as distributed under ubuntu 24.04.
+# https://github.com/podman-container-tools/buildah/issues/5474
+
+
+COPY container/check_versions.py /tmp/check_versions.py
+RUN python /tmp/check_versions.py
+
+
+
+
 RUN dpkg-query -W > /opt/panda/packages.lock && install -d -m 1777 /data
 WORKDIR /workspaces/student
 ENTRYPOINT ["/opt/panda/entrypoint.sh"]
